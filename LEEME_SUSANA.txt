@@ -1,0 +1,14 @@
+ESQUELETO COSMI (parte de Susana)
+
+1. Copiar TODO el contenido de esta carpeta (no la carpeta) dentro del repo clonado.
+2. Abrir en NetBeans: File > Open Project.
+3. Revisar usuario y clave de MySQL en src/main/resources/application.properties.
+4. Run Project. La base de datos "cosmi" se crea sola y se cargan los datos de prueba.
+5. Probar:
+   - http://localhost:8080/registro   (HU1)
+   - http://localhost:8080/login      (HU1)
+   - admin@cosmi.com / admin123       -> entra a /admin/inventario (HU17)
+   - cliente@cosmi.com / cliente123   -> /admin/inventario muestra el 403
+
+Archivo temporal: controller/InicioController.java y templates/index.html.
+Camila los reemplaza con el catálogo y entonces se borran.
