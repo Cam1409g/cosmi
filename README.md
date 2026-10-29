@@ -66,6 +66,7 @@ Entrar a http://localhost:8080
 Usuario de prueba	Correo	Contraseña
 Administrador	admin@cosmi.com	admin123
 Cliente	cliente@cosmi.com	cliente123
+prueba@cosmi.com Prueba123 correo y contraseña de prueba
 
 Enlaces
 Prototipo en Figma: Prop-Cosmi
