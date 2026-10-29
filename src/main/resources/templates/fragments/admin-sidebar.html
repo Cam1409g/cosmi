@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Menú lateral del panel de administración. Uso: ~{fragments/admin-sidebar :: sidebar('inventario')} -->
+<aside th:fragment="sidebar(activo)" class="admin-sidebar">
+    <div class="marca">Cosmi<small>ADMINISTRACIÓN</small></div>
+    <nav>
+        <a th:href="@{/admin/productos}" th:classappend="${activo == 'productos'} ? 'activo'">Productos</a>
+        <a th:href="@{/admin/categorias}" th:classappend="${activo == 'categorias'} ? 'activo'">Categorías</a>
+        <a th:href="@{/admin/inventario}" th:classappend="${activo == 'inventario'} ? 'activo'">Inventario</a>
+        <a th:href="@{/admin/pedidos}" th:classappend="${activo == 'pedidos'} ? 'activo'">Pedidos</a>
+        <a th:href="@{/admin/usuarios}" th:classappend="${activo == 'usuarios'} ? 'activo'">Usuarios</a>
+        <a th:href="@{/admin/reportes}" th:classappend="${activo == 'reportes'} ? 'activo'">Reportes</a>
+        <a th:href="@{/}">Ver tienda</a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Cerrar sesión</button>
+        </form>
+    </nav>
+</aside>
+</body>
+</html>

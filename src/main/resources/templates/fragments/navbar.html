@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Navbar de la tienda según el prototipo. Uso: ~{fragments/navbar :: navbar('catalogo')} -->
+<header th:fragment="navbar(activo)" class="cosmi-nav">
+    <div class="container nav-inner">
+        <a class="brand" th:href="@{/}">Cosmi</a>
+        <nav class="nav-links">
+            <a th:href="@{/catalogo}" th:classappend="${activo == 'catalogo'} ? 'activo'">Catálogo</a>
+
+            <th:block th:if="${logueado}">
+                <a th:href="@{/favoritos}" th:classappend="${activo == 'favoritos'} ? 'activo'">Favoritos</a>
+                <a th:href="@{/pedidos}" th:classappend="${activo == 'pedidos'} ? 'activo'">Mis pedidos</a>
+                <a th:if="${esAdmin}" th:href="@{/admin/inventario}">Administración</a>
+                <span class="saludo">Hola, <span th:text="${nombreUsuario}">Ana</span></span>
+                <form th:action="@{/logout}" method="post" class="form-salir">
+                    <button type="submit" class="link-salir">Salir</button>
+                </form>
+            </th:block>
+
+            <a th:unless="${logueado}" th:href="@{/login}" th:classappend="${activo == 'acceso'} ? 'activo'">Iniciar sesión</a>
+
+            <a class="btn-carrito" th:href="@{/carrito}">Carrito (<span th:text="${cantidadCarrito}">0</span>)</a>
+        </nav>
+    </div>
+</header>
+</body>
+</html>

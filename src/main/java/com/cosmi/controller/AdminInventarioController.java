@@ -1,6 +1,8 @@
 package com.cosmi.controller;
 
+import com.cosmi.domain.Producto;
 import com.cosmi.service.InventarioService;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,16 @@ public class AdminInventarioController {
 
     @GetMapping("/admin/inventario")
     public String inventario(Model model) {
-        model.addAttribute("productos", inventarioService.listar());
-        model.addAttribute("stockBajo", InventarioService.STOCK_BAJO);
+        List<Producto> productos = inventarioService.listar();
+        int bajo = InventarioService.STOCK_BAJO;
+
+        model.addAttribute("productos", productos);
+        model.addAttribute("stockBajo", bajo);
+        model.addAttribute("totalActivos", productos.size());
+        model.addAttribute("totalStockBajo",
+                productos.stream().filter(p -> p.getStock() > 0 && p.getStock() <= bajo).count());
+        model.addAttribute("totalAgotados",
+                productos.stream().filter(p -> p.getStock() == 0).count());
         return "admin/inventario";
     }
 

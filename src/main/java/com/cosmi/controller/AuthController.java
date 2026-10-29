@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+/**
+ * Según el prototipo, "Iniciar sesión" y "Crear cuenta" van en la misma pantalla (acceso.html).
+ */
 @Controller
 public class AuthController {
 
@@ -20,14 +23,15 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "login";
+    public String login(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "acceso";
     }
 
     @GetMapping("/registro")
     public String registroForm(Model model) {
         model.addAttribute("usuario", new Usuario());
-        return "registro";
+        return "acceso";
     }
 
     @PostMapping("/registro")
@@ -35,11 +39,11 @@ public class AuthController {
                             BindingResult result) {
         // Escenario 2: correo ya registrado
         if (!result.hasFieldErrors("correo") && usuarioService.correoExiste(usuario.getCorreo())) {
-            result.rejectValue("correo", "duplicado", "El correo ya está registrado");
+            result.rejectValue("correo", "duplicado", "Este correo ya está registrado");
         }
         // Escenario 3: campos obligatorios vacíos
         if (result.hasErrors()) {
-            return "registro";
+            return "acceso";
         }
         usuarioService.registrar(usuario);   // Escenario 1: registro exitoso
         return "redirect:/login?registrado";

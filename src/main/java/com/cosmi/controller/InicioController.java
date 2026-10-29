@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * PLACEHOLDER: página de inicio temporal para poder probar el login.
- * Camila la reemplaza con el catálogo; cuando lo haga, se borra este archivo.
+ * Camila la reemplaza con el inicio/catálogo real; cuando lo haga, se borra este archivo.
  */
 @Controller
 public class InicioController {
