@@ -1,0 +1,15 @@
+<!-- Menú lateral del panel de administración (según el prototipo). Uso:
+     <aside th:replace="~{general/menuAdmin :: sidebar('inventario')}"></aside> -->
+<aside th:fragment="sidebar(seccion)" class="admin-sidebar">
+    <div class="marca">[[#{aplicacion.titulo}]]<small>[[#{sidebar.titulo}]]</small></div>
+    <nav>
+        <a th:href="@{/admin/productos}" th:classappend="${seccion == 'productos'} ? 'activo'">[[#{sidebar.productos}]]</a>
+        <a th:href="@{/admin/categorias}" th:classappend="${seccion == 'categorias'} ? 'activo'">[[#{sidebar.categorias}]]</a>
+        <a th:href="@{/admin/inventario}" th:classappend="${seccion == 'inventario'} ? 'activo'">[[#{sidebar.inventario}]]</a>
+        <a th:href="@{/admin/pedidos}" th:classappend="${seccion == 'pedidos'} ? 'activo'">[[#{sidebar.pedidos}]]</a>
+        <a th:href="@{/admin/usuarios}" th:classappend="${seccion == 'usuarios'} ? 'activo'">[[#{sidebar.usuarios}]]</a>
+        <a th:href="@{/admin/reportes}" th:classappend="${seccion == 'reportes'} ? 'activo'">[[#{sidebar.reportes}]]</a>
+        <a th:href="@{/}">[[#{sidebar.verTienda}]]</a>
+        <a th:href="@{/logout}">[[#{sidebar.cerrarSesion}]]</a>
+    </nav>
+</aside>

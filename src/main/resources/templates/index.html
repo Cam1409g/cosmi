@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head(#{index.titulo.pagina})}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: navbar('inicio')}"></header>
+        <div th:replace="~{general/fragmentos :: toasts}"></div>
+
+        <main class="container hero">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <span class="etiqueta" th:text="#{index.etiqueta}">Cosméticos y skincare</span>
+                    <h1 th:text="#{index.titulo}">Tu rutina, a la medida de tu piel</h1>
+                    <p th:text="#{index.texto}">Encuentra limpiadores, sérums, protectores y maquillaje según tu tipo de piel.</p>
+                    <div class="acciones">
+                        <!--/* TODO: cambiar el # por @{/catalogo} cuando exista el catálogo */-->
+                        <a href="#" class="btn-cosmi" th:text="#{index.verCatalogo}">Ver catálogo</a>
+                        <a th:href="@{/registro}" class="btn-cosmi-outline" th:text="#{index.indicarPiel}">Indicar mi tipo de piel</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="banner" th:text="#{index.banner}">Imagen principal (banner)</div>
+                </div>
+            </div>
+        </main>
+
+        <th:block th:replace="~{general/fragmentos :: scripts}"></th:block>
+    </body>
+</html>

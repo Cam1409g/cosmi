@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head(#{inventario.titulo})}"></head>
+    <body>
+        <div th:replace="~{general/fragmentos :: toasts}"></div>
+
+        <div class="admin-layout">
+
+            <aside th:replace="~{general/menuAdmin :: sidebar('inventario')}"></aside>
+
+            <main class="admin-main">
+                <h1>[[#{inventario.titulo}]]</h1>
+
+                <section th:replace="~{inventario/fragmentos :: resumen}"></section>
+                <section th:replace="~{inventario/fragmentos :: listado}"></section>
+                <section th:replace="~{inventario/fragmentos :: formulario}"></section>
+            </main>
+        </div>
+
+        <th:block th:replace="~{general/fragmentos :: scripts}"></th:block>
+        <script th:src="@{/js/modulos/inventario.js}"></script>
+    </body>
+</html>

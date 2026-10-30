@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head(#{acceso.titulo.pagina})}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: navbar('acceso')}"></header>
+
+        <main class="container acceso">
+            <div class="row g-4">
+
+                <!-- Iniciar sesión: POST /login con los parámetros correo y contrasena -->
+                <div class="col-lg-5">
+                    <section class="cosmi-card">
+                        <h1 th:text="#{login.titulo}">Iniciar sesión</h1>
+
+                        <div th:if="${todoOk != null}" class="aviso aviso-ok" th:text="${todoOk}"></div>
+                        <div th:if="${error != null}" class="aviso aviso-error" th:text="${error}"></div>
+
+                        <form th:action="@{/login}" method="post">
+                            <div class="campo">
+                                <label class="form-label" for="correoLogin" th:text="#{login.correo}">Correo electrónico</label>
+                                <input type="email" id="correoLogin" name="correo" class="form-control" required>
+                            </div>
+                            <div class="campo">
+                                <label class="form-label" for="contrasenaLogin" th:text="#{login.contrasena}">Contraseña</label>
+                                <input type="password" id="contrasenaLogin" name="contrasena" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn-cosmi w-100" th:text="#{accion.entrar}">Entrar</button>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- Crear cuenta: POST /registro con el objeto usuario validado -->
+                <div class="col-lg-7">
+                    <section class="cosmi-card">
+                        <h2 th:text="#{registro.titulo}">Crear cuenta</h2>
+
+                        <div th:if="${#fields.hasErrors('${usuario.*}')}" class="aviso aviso-error"
+                             th:text="#{registro.error.campos}">Por favor completa todos los campos obligatorios.</div>
+
+                        <form th:action="@{/registro}" th:object="${usuario}" method="post" novalidate>
+                            <div class="row">
+                                <div class="col-md-6 campo">
+                                    <label class="form-label" for="nombre" th:text="#{registro.nombre}">Nombre</label>
+                                    <input type="text" class="form-control" th:field="*{nombre}"
+                                           th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
+                                </div>
+                                <div class="col-md-6 campo">
+                                    <label class="form-label" for="apellidos" th:text="#{registro.apellidos}">Apellidos</label>
+                                    <input type="text" class="form-control" th:field="*{apellidos}">
+                                </div>
+                            </div>
+
+                            <div class="campo">
+                                <label class="form-label" for="correo" th:text="#{login.correo}">Correo electrónico</label>
+                                <input type="email" class="form-control" th:field="*{correo}"
+                                       th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+                            </div>
+
+                            <div class="campo">
+                                <label class="form-label" for="contrasena" th:text="#{registro.contrasena}">Contraseña</label>
+                                <input type="password" class="form-control" th:field="*{contrasena}"
+                                       th:classappend="${#fields.hasErrors('contrasena')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}"></div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 campo">
+                                    <label class="form-label" for="telefono" th:text="#{registro.telefono}">Teléfono</label>
+                                    <input type="tel" class="form-control" th:field="*{telefono}">
+                                </div>
+                                <div class="col-md-6 campo">
+                                    <label class="form-label" for="tipoPiel" th:text="#{registro.tipoPiel}">Tipo de piel (opcional)</label>
+                                    <select class="form-select" th:field="*{tipoPiel}">
+                                        <option th:value="''" th:text="#{registro.tipoPiel.seleccionar}">Seleccionar…</option>
+                                        <option th:value="'seca'" th:text="#{piel.seca}">Seca</option>
+                                        <option th:value="'grasa'" th:text="#{piel.grasa}">Grasa</option>
+                                        <option th:value="'mixta'" th:text="#{piel.mixta}">Mixta</option>
+                                        <option th:value="'normal'" th:text="#{piel.normal}">Normal</option>
+                                        <option th:value="'sensible'" th:text="#{piel.sensible}">Sensible</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-cosmi-dark" th:text="#{accion.registrar}">Crear cuenta</button>
+                        </form>
+                    </section>
+                </div>
+
+            </div>
+        </main>
+
+        <th:block th:replace="~{general/fragmentos :: scripts}"></th:block>
+    </body>
+</html>
