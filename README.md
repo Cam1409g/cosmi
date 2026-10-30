@@ -35,26 +35,6 @@ Los cambios llegan a `main` por pull request revisado por otra integrante.
 - Transacciones (`@Transactional`) al confirmar y cancelar pedidos
 - Seguridad: por ahora el login usa sesión (`AdminInterceptor` devuelve 403 a quien no es ADMIN en `/admin/**`). Se cambia por Spring Security cuando se vea en clase.
 
-## Estructura del proyecto
-
-```
-com.cosmi
-├── CosmiApplication.java      Clase principal
-├── ProjectConfig.java         Idiomas (i18n), cifrado BCrypt e interceptor de /admin
-├── AdminInterceptor.java      Protege /admin/** (sesión y rol ADMIN)
-├── StorageConfig.java         Conexión con Firebase Storage
-├── controller/                Controllers: reciben la petición y devuelven la vista
-├── service/                   Services: lógica de negocio y transacciones
-├── repository/                Repositories: acceso a la base de datos (Spring Data JPA)
-└── model/                     Entidades JPA y enumeraciones
-
-src/main/resources
-├── creaTablas.sql             Crea la base de datos, el usuario, las tablas y los datos de prueba
-├── messages*.properties       Textos en español (por defecto) e inglés
-├── templates/general/         Fragmentos compartidos: head, menú superior, menú lateral, footer, toast y modal de eliminar
-├── templates/<módulo>/        Una carpeta por módulo, con listado.html y fragmentos.html
-└── static/js/modulos/         Un archivo JavaScript por módulo
-```
 
 ### Convenciones del equipo
 
@@ -92,7 +72,7 @@ Se implementan 13 de las 20 historias, incluidas las 10 de prioridad alta.
 1. Clonar el repositorio y cambiar a su rama:
    ```
    git clone https://github.com/Cam1409g/cosmi.git
-   git checkout feature/SuNombre
+   git checkout feature/Susana
    ```
 2. En MySQL, ejecutar el script `src/main/resources/creaTablas.sql` con un usuario administrador. Crea la base `cosmi`, el usuario `usuario_cosmi`, las tablas y los datos de prueba.
 3. Revisar que `application.properties` use la clave de ese usuario.
