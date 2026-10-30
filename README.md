@@ -63,14 +63,14 @@ Se implementan 13 de las 20 historias, incluidas las 10 de prioridad alta.
 **Requisitos:** JDK 21 o superior, MySQL 8 y NetBeans (o un IDE con Maven).
 
 1. Clonar el repositorio y cambiar a su rama:
-   ```
-   git clone https://github.com/Cam1409g/cosmi.git
-   git checkout feature/Susana
-   ```
-2. En MySQL, ejecutar el script `src/main/resources/creaTablas.sql` con un usuario administrador. Crea la base `cosmi`, el usuario `usuario_cosmi`, las tablas y los datos de prueba.
-3. Revisar que `application.properties` use la clave de ese usuario.
-4. Abrir el proyecto en NetBeans y ejecutarlo (Run).
-5. Entrar a http://localhost:8080
+   
+  git clone https://github.com/Cam1409g/cosmi.git
+  git checkout feature/Susana
+
+3. En MySQL, ejecutar el script `src/main/resources/creaTablas.sql` con un usuario administrador. Crea la base `cosmi`, el usuario `usuario_cosmi`, las tablas y los datos de prueba.
+4. Revisar que `application.properties` use la clave de ese usuario.
+5. Abrir el proyecto en NetBeans y ejecutarlo (Run).
+6. Entrar a http://localhost:8080
 
 ### Usuarios de prueba
 
