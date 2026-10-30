@@ -36,13 +36,6 @@ Los cambios llegan a `main` por pull request revisado por otra integrante.
 - Seguridad: por ahora el login usa sesión (`AdminInterceptor` devuelve 403 a quien no es ADMIN en `/admin/**`). Se cambia por Spring Security cuando se vea en clase.
 
 
-### Convenciones del equipo
-
-- Los controllers y services usan `@RequiredArgsConstructor` (Lombok) para inyectar sus dependencias.
-- Los ids son `Integer` y se llaman `idProducto`, `idCategoria`, etc. Las existencias del producto se llaman `existencias`.
-- Los mensajes al usuario salen de `messages.properties` con `MessageSource` y se envían con `addFlashAttribute("todoOk", ...)` o `addFlashAttribute("error", ...)`. Se muestran con el fragmento `mostrarToast`.
-- Cada página incluye `general/fragmentos :: head(...)`, el menú (`header` o `sidebar`) y el `footer`.
-- La llave de Firebase (`firebase-adminsdk-....json`) va en `src/main/resources/firebase/` y **no se sube a GitHub**.
 
 ## Ramas
 
