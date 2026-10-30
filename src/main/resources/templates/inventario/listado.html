@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{general/fragmentos :: head(#{inventario.titulo})}"></head>
+    <head th:replace="~{general/fragmentos :: head}"></head>
     <body>
-        <div th:replace="~{general/fragmentos :: toasts}"></div>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
 
         <div class="admin-layout">
 
@@ -16,8 +16,6 @@
                 <section th:replace="~{inventario/fragmentos :: formulario}"></section>
             </main>
         </div>
-
-        <th:block th:replace="~{general/fragmentos :: scripts}"></th:block>
         <script th:src="@{/js/modulos/inventario.js}"></script>
     </body>
 </html>

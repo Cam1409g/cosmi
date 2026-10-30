@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{general/fragmentos :: head(#{acceso.titulo.pagina})}"></head>
+    <head th:replace="~{general/fragmentos :: head}"></head>
     <body>
-        <header th:replace="~{general/fragmentos :: navbar('acceso')}"></header>
+        <header th:replace="~{general/fragmentos :: header('acceso')}"></header>
 
         <main class="container acceso">
             <div class="row g-4">
@@ -90,7 +90,6 @@
 
             </div>
         </main>
-
-        <th:block th:replace="~{general/fragmentos :: scripts}"></th:block>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
     </body>
 </html>
