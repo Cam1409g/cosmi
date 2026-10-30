@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Acceso')}"></head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('acceso')}"></header>
+
+<main class="container acceso">
+    <div class="row g-4 align-items-start">
+
+        <!-- ===== Iniciar sesión ===== -->
+        <div class="col-lg-6">
+            <section class="cosmi-card">
+                <h1>Iniciar sesión</h1>
+
+                <div class="aviso aviso-ok" th:if="${param.registrado}">¡Tu cuenta fue creada! Ya puedes iniciar sesión.</div>
+                <div class="aviso aviso-error" th:if="${param.error}">Correo o contraseña incorrectos.</div>
+
+                <form th:action="@{/login}" method="post">
+                    <div class="campo">
+                        <label class="form-label" for="login-correo">Correo electrónico</label>
+                        <input class="form-control" type="email" id="login-correo" name="correo"
+                               placeholder="ana@correo.com" required>
+                    </div>
+                    <div class="campo">
+                        <label class="form-label" for="login-contrasena">Contraseña</label>
+                        <input class="form-control" type="password" id="login-contrasena" name="contrasena" required>
+                    </div>
+                    <button class="btn-cosmi w-100" type="submit">Entrar</button>
+                </form>
+            </section>
+        </div>
+
+        <div class="col-lg-6">
+            <section class="cosmi-card">
+                <h2>Crear cuenta</h2>
+
+                <form th:action="@{/registro}" th:object="${usuario}" method="post" novalidate>
+                    <div class="aviso aviso-error" th:if="${#fields.hasErrors('*')}">
+                        Por favor completa todos los campos obligatorios.
+                    </div>
+
+                    <div class="row g-3 campo">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="nombre">Nombre</label>
+                            <input class="form-control" type="text" id="nombre" th:field="*{nombre}"
+                                   th:classappend="${#fields.hasErrors('nombre')} ? 'is-invalid'">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}"
+                                 th:text="${#fields.errors('nombre')[0]}"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label" for="apellidos">Apellidos</label>
+                            <input class="form-control" type="text" id="apellidos" th:field="*{apellidos}">
+                        </div>
+                    </div>
+
+                    <div class="campo">
+                        <label class="form-label" for="correo">Correo electrónico</label>
+                        <input class="form-control" type="email" id="correo" th:field="*{correo}"
+                               th:classappend="${#fields.hasErrors('correo')} ? 'is-invalid'">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('correo')}"
+                             th:text="${#fields.errors('correo')[0]}"></div>
+                    </div>
+
+                    <div class="campo">
+                        <label class="form-label" for="contrasena">Contraseña</label>
+                        <input class="form-control" type="password" id="contrasena" th:field="*{contrasena}"
+                               th:classappend="${#fields.hasErrors('contrasena')} ? 'is-invalid'">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('contrasena')}"
+                             th:text="${#fields.errors('contrasena')[0]}"></div>
+                    </div>
+
+                    <div class="campo">
+                        <label class="form-label" for="tipoPiel">Tipo de piel (opcional)</label>
+                        <select class="form-select" id="tipoPiel" th:field="*{tipoPiel}">
+                            <option value="">Seleccionar…</option>
+                            <option value="seca">Seca</option>
+                            <option value="grasa">Grasa</option>
+                            <option value="mixta">Mixta</option>
+                            <option value="normal">Normal</option>
+                            <option value="sensible">Sensible</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-cosmi-outline w-100" type="submit">Registrarme</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</main>
+</body>
+</html>

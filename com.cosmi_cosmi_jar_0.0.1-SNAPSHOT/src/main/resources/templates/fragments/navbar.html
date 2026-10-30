@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="navbar(activo)" class="cosmi-nav">
+    <div class="container nav-inner">
+        <a class="brand" th:href="@{/}">Cosmi</a>
+
+        <nav class="nav-links">
+            <a th:href="@{/}" th:classappend="${activo == 'inicio'} ? 'activo'">Inicio</a>
+            <a th:href="@{/catalogo}" th:classappend="${activo == 'catalogo'} ? 'activo'">Catálogo</a>
+
+            <a th:if="${esAdmin}" th:href="@{/admin/inventario}" th:classappend="${activo == 'admin'} ? 'activo'">Administración</a>
+
+            <span class="saludo" th:if="${logueado}" th:text="'Hola, ' + ${nombreUsuario}">Hola</span>
+
+            <a th:unless="${logueado}" th:href="@{/login}" th:classappend="${activo == 'acceso'} ? 'activo'">Iniciar sesión</a>
+
+            <a class="btn-carrito" th:href="@{/carrito}">
+                <i class="fa-solid fa-bag-shopping"></i> Carrito (<span th:text="${cantidadCarrito}">0</span>)
+            </a>
+
+            <form class="form-salir" th:if="${logueado}" th:action="@{/logout}" method="post">
+                <button class="link-salir" type="submit">Salir</button>
+            </form>
+        </nav>
+    </div>
+</header>
+</body>
+</html>

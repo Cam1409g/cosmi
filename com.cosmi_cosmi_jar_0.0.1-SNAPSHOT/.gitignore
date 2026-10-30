@@ -1,0 +1,6 @@
+target/
+nbproject/private/
+nbactions.xml
+uploads/
+*.log
+firebase-adminsdk-*.json
