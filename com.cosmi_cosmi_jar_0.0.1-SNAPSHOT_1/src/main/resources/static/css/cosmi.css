@@ -1,0 +1,170 @@
+/* ==========================================================
+   Cosmi · estilos globales (paleta y tipografía del prototipo de Figma)
+   Se carga DESPUÉS de Bootstrap para sobrescribir sus colores.
+   ========================================================== */
+:root {
+    --ink: #2b2326;
+    --muted: #6b5a5f;
+    --bg: #fbf7f4;
+    --white: #ffffff;
+    --bordo: #9c3d54;
+    --bordo-oscuro: #842f44;
+    --sidebar: #2b2326;
+    --sidebar-activo: #4a3f42;
+    --placeholder: #efe4df;
+    --thead: #f3ece9;
+    --borde-card: #e8ded8;
+    --borde-input: #cdbfb8;
+    --err-bg: #fbede9;
+    --err: #8a2f1c;
+    --ok-bg: #e7eeea;
+    --ok: #3d5649;
+    --warn-bg: #fff7e8;
+    --warn: #7a4b00;
+    --fila-bajo: #fffbf2;
+    --fila-agotado: #fdf5f3;
+    --salvia: #4f6b5d;
+
+    --bs-body-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --bs-body-color: var(--ink);
+    --bs-body-bg: var(--bg);
+}
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+}
+
+h1, h2, h3 { color: var(--ink); font-weight: 700; letter-spacing: -0.01em; }
+a { color: var(--bordo); text-decoration: none; }
+a:hover { color: var(--bordo-oscuro); }
+
+/* ---------- Navbar de la tienda ---------- */
+.cosmi-nav { background: var(--white); height: 72px; display: flex; align-items: center; }
+.cosmi-nav .nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.cosmi-nav .brand { font-size: 24px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+.cosmi-nav .nav-links { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+.cosmi-nav .nav-links a { color: var(--ink); font-size: 14px; }
+.cosmi-nav .nav-links a.activo { font-weight: 700; }
+.cosmi-nav .saludo { font-size: 14px; }
+.cosmi-nav .btn-carrito {
+    background: var(--ink); color: var(--white) !important; font-weight: 600;
+    padding: 10px 20px; border-radius: 999px;
+}
+.cosmi-nav .link-salir {
+    background: none; border: 0; padding: 0; font-size: 14px; color: var(--bordo); cursor: pointer;
+}
+.cosmi-nav .form-salir { margin: 0; }
+
+/* ---------- Tarjetas ---------- */
+.cosmi-card {
+    background: var(--white);
+    border: 1px solid var(--borde-card);
+    border-radius: 20px;
+    padding: 30px;
+}
+.cosmi-card h1, .cosmi-card h2 { font-size: 30px; margin-bottom: 18px; }
+
+/* ---------- Formularios ---------- */
+.form-label { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.form-control, .form-select {
+    height: 42px; border: 1px solid var(--borde-input); border-radius: 12px;
+    font-size: 14px; color: var(--ink); background-color: var(--white);
+}
+.form-control::placeholder { color: var(--muted); }
+.form-control:focus, .form-select:focus {
+    border-color: var(--bordo); box-shadow: 0 0 0 3px rgba(156, 61, 84, 0.12);
+}
+.form-control.is-invalid, .form-select.is-invalid {
+    border: 1.5px solid var(--err); background-image: none; padding-right: 0.75rem;
+}
+.form-control.is-invalid:focus { box-shadow: 0 0 0 3px rgba(138, 47, 28, 0.12); }
+.invalid-feedback { display: block; color: var(--err); font-size: 12px; margin-top: 6px; }
+
+/* ---------- Botones ---------- */
+.btn-cosmi, .btn-cosmi-outline, .btn-cosmi-dark {
+    display: inline-block; border-radius: 999px; padding: 11px 22px;
+    font-weight: 600; font-size: 14px; cursor: pointer; text-align: center;
+    border: 1.5px solid transparent;
+}
+.btn-cosmi { background: var(--bordo); color: var(--white); }
+.btn-cosmi:hover { background: var(--bordo-oscuro); color: var(--white); }
+.btn-cosmi-outline { background: var(--white); color: var(--ink); border-color: var(--ink); }
+.btn-cosmi-outline:hover { background: var(--bg); color: var(--ink); }
+.btn-cosmi-dark { background: var(--ink); color: var(--white); }
+.btn-cosmi-dark:hover { background: #4a3f42; color: var(--white); }
+
+/* ---------- Avisos ---------- */
+.aviso { border-radius: 10px; padding: 11px 14px; font-size: 13px; margin-bottom: 14px; }
+.aviso-error { background: var(--err-bg); color: var(--err); }
+.aviso-ok { background: var(--ok-bg); color: var(--ok); }
+.aviso-warn { background: var(--warn-bg); color: var(--warn); }
+
+/* ---------- Pantalla de acceso (login + registro) ---------- */
+.acceso { padding-top: 44px; padding-bottom: 60px; }
+.acceso .campo { margin-bottom: 16px; }
+
+/* ---------- Inicio (provisional) ---------- */
+.hero { padding: 56px 0 40px; }
+.hero .etiqueta { color: var(--salvia); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.hero h1 { font-size: 52px; line-height: 1.1; margin: 14px 0 18px; }
+.hero p { color: var(--muted); font-size: 17px; max-width: 520px; }
+.hero .acciones { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+.hero .banner {
+    background: var(--placeholder); border-radius: 18px; min-height: 290px;
+    display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 13px;
+}
+
+/* ---------- Página de error (403) ---------- */
+.error-pagina { text-align: center; padding: 90px 0; }
+.error-pagina .codigo { font-size: 88px; font-weight: 700; color: var(--bordo); line-height: 1; }
+.error-pagina h1 { font-size: 30px; margin: 22px 0 10px; }
+.error-pagina p { color: var(--muted); max-width: 440px; margin: 0 auto 22px; }
+
+/* ---------- Panel de administración ---------- */
+.admin-layout { display: flex; min-height: 100vh; }
+.admin-sidebar { width: 217px; flex-shrink: 0; background: var(--sidebar); color: var(--white); padding: 24px 14px; }
+.admin-sidebar .marca { font-size: 20px; font-weight: 700; padding: 0 12px; }
+.admin-sidebar .marca small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .05em; color: #d9cfd2; margin-top: 2px; }
+.admin-sidebar nav { margin-top: 22px; display: flex; flex-direction: column; gap: 4px; }
+.admin-sidebar nav a, .admin-sidebar nav button {
+    display: block; width: 100%; text-align: left; background: none; border: 0;
+    color: #f1e9ec; font-size: 14px; padding: 10px 12px; border-radius: 10px; cursor: pointer; font-family: inherit;
+}
+.admin-sidebar nav a:hover, .admin-sidebar nav button:hover { background: var(--sidebar-activo); color: var(--white); }
+.admin-sidebar nav a.activo { background: var(--sidebar-activo); color: var(--white); font-weight: 600; }
+.admin-sidebar nav form { margin: 0; }
+.admin-main { flex: 1; padding: 38px 32px; min-width: 0; }
+.admin-main h1 { font-size: 30px; margin-bottom: 22px; }
+
+.stat { border: 1px solid var(--borde-card); background: var(--white); border-radius: 18px; padding: 18px 20px; height: 100%; }
+.stat .titulo { display: block; font-size: 13px; }
+.stat strong { display: block; font-size: 34px; font-weight: 700; line-height: 1.2; margin-top: 4px; }
+.stat-warn { background: var(--warn-bg); border-color: #f4ead2; color: var(--warn); }
+.stat-error { background: var(--err-bg); border-color: #f1ddd8; color: var(--err); }
+
+.tabla-wrap { margin-top: 22px; background: var(--white); border: 1px solid #f0e9e5; border-radius: 18px; overflow-x: auto; }
+.tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabla thead th { background: var(--thead); color: var(--muted); font-size: 12px; font-weight: 600; padding: 14px 18px; text-align: left; white-space: nowrap; }
+.tabla tbody td { padding: 14px 18px; vertical-align: middle; }
+.tabla tbody tr { border-top: 1px solid #f0e9e5; }
+.tabla .producto { font-weight: 700; }
+.tabla .existencias { font-weight: 700; text-align: center; }
+.tabla tr.fila-agotado { background: var(--fila-agotado); }
+.tabla tr.fila-bajo { background: var(--fila-bajo); }
+.estado-agotado { color: var(--err); font-weight: 600; }
+.estado-bajo { color: var(--warn); font-weight: 600; }
+.estado-ok { color: var(--ok); font-weight: 600; }
+.ajuste { display: flex; align-items: center; gap: 8px; margin: 0; }
+.ajuste span { font-size: 13px; }
+.ajuste .form-control { width: 76px; height: 36px; text-align: left; }
+.ajuste button { padding: 8px 16px; font-size: 13px; }
+
+@media (max-width: 768px) {
+    .admin-layout { flex-direction: column; }
+    .admin-sidebar { width: 100%; }
+    .hero h1 { font-size: 38px; }
+    .cosmi-nav { height: auto; padding: 14px 0; }
+}

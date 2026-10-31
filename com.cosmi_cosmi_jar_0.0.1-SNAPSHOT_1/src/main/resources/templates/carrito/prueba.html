@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header('catalogo')}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <main class="container my-4">
+            <h1>Prueba del carrito (temporal)</h1>
+            <div class="tabla-wrap">
+                <table class="tabla">
+                    <tbody>
+                        <tr th:each="p : ${productos}">
+                            <td class="producto">[[${p.nombre}]]</td>
+                            <td>Existencias: [[${p.existencias}]]</td>
+                            <td><form th:replace="~{carrito/fragmentos :: botonAgregar(${p.idProducto})}"></form></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>
