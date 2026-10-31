@@ -1,6 +1,7 @@
 package com.cosmi.controller;
 
 import com.cosmi.repository.UsuarioRepository;
+import com.cosmi.service.CarritoService;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class GlobalModelAttributes {
 
     private final UsuarioRepository usuarioRepository;
+    private final CarritoService carritoService;
 
-    public GlobalModelAttributes(UsuarioRepository usuarioRepository) {
+    public GlobalModelAttributes(UsuarioRepository usuarioRepository, CarritoService carritoService) {
         this.usuarioRepository = usuarioRepository;
+        this.carritoService = carritoService;
     }
 
     @ModelAttribute
@@ -30,7 +33,7 @@ public class GlobalModelAttributes {
         model.addAttribute("logueado", logueado);
         model.addAttribute("esAdmin", false);
         model.addAttribute("nombreUsuario", "");
-        model.addAttribute("cantidadCarrito", 0);   // TODO (Britzel): cantidad real del carrito
+        model.addAttribute("cantidadCarrito", 0);
 
         if (logueado) {
             boolean admin = auth.getAuthorities().stream()
@@ -38,6 +41,7 @@ public class GlobalModelAttributes {
             model.addAttribute("esAdmin", admin);
             usuarioRepository.findByCorreo(auth.getName())
                     .ifPresent(u -> model.addAttribute("nombreUsuario", u.getNombre()));
+            model.addAttribute("cantidadCarrito", carritoService.cantidadItems(auth.getName()));
         }
     }
 }

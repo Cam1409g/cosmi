@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Prueba carrito')}"></head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('carrito')}"></header>
+
+<main class="container my-4">
+    <h1>Productos (página temporal de prueba)</h1>
+    <div class="tabla-wrap">
+        <table class="tabla">
+            <thead>
+            <tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Agregar</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${productos}">
+                <td class="producto" th:text="${p.nombre}">Producto</td>
+                <td>&#8353;[[${#numbers.formatDecimal(p.precio, 0, 'COMMA', 2, 'POINT')}]]</td>
+                <td th:text="${p.stock}">0</td>
+                <td>
+                    <form th:action="@{/carrito/agregar}" method="post" class="ajuste">
+                        <input type="hidden" name="idProducto" th:value="${p.id}">
+                        <input class="form-control" type="number" name="cantidad" value="1" min="1">
+                        <button class="btn-cosmi-dark" type="submit">Agregar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
