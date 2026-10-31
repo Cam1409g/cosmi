@@ -1,0 +1,99 @@
+<!-- 1 Fragmento con las tarjetas de resumen: productos activos, existencias bajas y agotados -->
+<section th:fragment="resumen">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="stat">
+                <span class="titulo">[[#{inventario.activos}]]</span>
+                <strong>[[${totalActivos}]]</strong>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat stat-warn">
+                <span class="titulo">[[#{inventario.bajas(${existenciasBajas})}]]</span>
+                <strong>[[${totalBajas}]]</strong>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat stat-error">
+                <span class="titulo">[[#{inventario.agotados}]]</span>
+                <strong>[[${totalAgotados}]]</strong>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2 Fragmento para el listado del inventario con la alerta de existencias bajas (HU17) -->
+<section th:fragment="listado">
+    <div class="tabla-wrap">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>[[#{inventario.producto}]]</th>
+                    <th>[[#{inventario.categoria}]]</th>
+                    <th style="text-align:center;">[[#{inventario.existencias}]]</th>
+                    <th>[[#{inventario.alerta}]]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${productos}"
+                    th:classappend="${p.existencias == 0} ? 'fila-agotado' : (${p.existencias <= existenciasBajas} ? 'fila-bajo' : '')">
+                    <td class="producto">[[${p.nombre}]]</td>
+                    <td>[[${p.categoria != null ? p.categoria.nombre : '-'}]]</td>
+                    <td class="existencias">[[${p.existencias}]]</td>
+                    <td>
+                        <span class="estado-agotado" th:if="${p.existencias == 0}">[[#{inventario.estado.agotado}]]</span>
+                        <span class="estado-bajo" th:if="${p.existencias > 0 and p.existencias <= existenciasBajas}">[[#{inventario.estado.bajo}]]</span>
+                        <span class="estado-ok" th:if="${p.existencias > existenciasBajas}">[[#{inventario.estado.ok}]]</span>
+                    </td>
+                    <td>
+                        <button type="button"
+                                class="btn-cosmi-dark"
+                                data-bs-toggle="modal"
+                                data-bs-target="#inventarioModal"
+                                th:data-id="${p.idProducto}"
+                                th:data-nombre="${p.nombre}"
+                                th:data-existencias="${p.existencias}">
+                            <i class="fa-solid fa-pen"></i> [[#{inventario.ajustar}]]
+                        </button>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(productos)}">
+                    <td colspan="5" style="text-align:center;">[[#{lista.vacia}]]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- 3 Fragmento con el formulario (modal) para ajustar las existencias de un producto -->
+<section th:fragment="formulario">
+    <div class="modal fade" id="inventarioModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form id="inventarioForm" method="post" th:action="@{/admin/inventario/guardar}">
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title">[[#{inventario.ajustar}]]: <span id="inventarioNombre"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[[#{accion.cerrar}]]"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="inventarioId" name="idProducto"/>
+                        <div class="mb-3">
+                            <label for="inventarioExistencias" class="form-label">[[#{inventario.nuevasExistencias}]]</label>
+                            <input type="number" id="inventarioExistencias" name="existencias"
+                                   class="form-control" min="0" step="1" required="required"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk"></i> [[#{accion.guardar}]]
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

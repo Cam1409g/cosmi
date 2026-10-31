@@ -1,0 +1,63 @@
+<!-- 1 Tabla con los productos del carrito (HU7) -->
+<section th:fragment="listado">
+    <div class="tabla-wrap">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>[[#{carrito.producto}]]</th>
+                    <th>[[#{carrito.precio}]]</th>
+                    <th>[[#{carrito.cantidad}]]</th>
+                    <th>[[#{carrito.subtotal}]]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="d : ${detalles}">
+                    <td>
+                        <img th:if="${d.producto.imagen != null and d.producto.imagen != ''}"
+                             th:src="${d.producto.imagen}" th:alt="${d.producto.nombre}"
+                             style="height:50px; width:50px; object-fit:cover;"/>
+                    </td>
+                    <td class="producto">[[${d.producto.nombre}]]</td>
+                    <td>&#8353;[[${#numbers.formatDecimal(d.producto.precio, 0, 'COMMA', 2, 'POINT')}]]</td>
+                    <td>
+                        <form th:action="@{/carrito/modificar}" method="post" class="d-flex gap-2">
+                            <input type="hidden" name="idDetalle" th:value="${d.idDetalleCarrito}"/>
+                            <input type="number" name="cantidad" th:value="${d.cantidad}"
+                                   min="1" th:max="${d.producto.existencias}"
+                                   class="form-control form-control-sm" style="width:80px;"/>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">[[#{accion.actualizar}]]</button>
+                        </form>
+                    </td>
+                    <td>&#8353;[[${#numbers.formatDecimal(d.producto.precio * d.cantidad, 0, 'COMMA', 2, 'POINT')}]]</td>
+                    <td>
+                        <form th:action="@{/carrito/eliminar}" method="post">
+                            <input type="hidden" name="idDetalle" th:value="${d.idDetalleCarrito}"/>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fa-solid fa-trash"></i> [[#{accion.eliminar}]]
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" style="text-align:right;"><strong>[[#{carrito.totalCompra}]]</strong></td>
+                    <td colspan="2"><strong>&#8353;[[${#numbers.formatDecimal(totalCarrito, 0, 'COMMA', 2, 'POINT')}]]</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</section>
+
+<!-- 2 Botón para agregar un producto al carrito (HU6). Camila lo incluye en el catálogo y el detalle:
+     <form th:replace="~{carrito/fragmentos :: botonAgregar(${p.idProducto})}"></form> -->
+<form th:fragment="botonAgregar(idProducto)" th:action="@{/carrito/agregar}" method="post"
+      class="d-inline-flex gap-2 align-items-center">
+    <input type="hidden" name="idProducto" th:value="${idProducto}"/>
+    <input type="number" name="cantidad" value="1" min="1" class="form-control form-control-sm" style="width:80px;"/>
+    <button type="submit" class="btn-cosmi">
+        <i class="fa-solid fa-cart-plus"></i> [[#{carrito.agregar}]]
+    </button>
+</form>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header('carrito')}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <main class="container my-4">
+            <h1>[[#{carrito.titulo}]]</h1>
+
+            <div th:if="${#lists.isEmpty(detalles)}" class="aviso aviso-warn my-3">
+                [[#{carrito.no_mostrar}]]
+            </div>
+
+            <section th:unless="${#lists.isEmpty(detalles)}" th:replace="~{carrito/fragmentos :: listado}"></section>
+
+            <a th:href="@{/}" class="btn-cosmi-outline">[[#{carrito.seguirComprando}]]</a>
+        </main>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

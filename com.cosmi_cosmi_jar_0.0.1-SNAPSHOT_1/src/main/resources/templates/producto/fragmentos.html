@@ -1,0 +1,145 @@
+<!-- 1 Botón para agregar un producto nuevo -->
+<section th:fragment="botonNuevo" class="mb-3">
+    <button type="button" class="btn-cosmi-dark" data-bs-toggle="modal" data-bs-target="#productoModal">
+        <i class="fa-solid fa-plus"></i> [[#{producto.agregar}]]
+    </button>
+    <span class="ms-3">[[#{producto.total}]]: <strong>[[${totalProductos}]]</strong></span>
+</section>
+
+<!-- 2 Listado de productos -->
+<section th:fragment="listado">
+    <div class="tabla-wrap">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>[[#{producto.nombre}]]</th>
+                    <th>[[#{producto.categoria}]]</th>
+                    <th>[[#{producto.precio}]]</th>
+                    <th style="text-align:center;">[[#{producto.existencias}]]</th>
+                    <th>[[#{producto.estado}]]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${productos}">
+                    <td>
+                        <img th:if="${p.imagen != null and p.imagen != ''}" th:src="${p.imagen}"
+                             th:alt="${p.nombre}" style="height:50px; width:50px; object-fit:cover;"/>
+                    </td>
+                    <td class="producto">[[${p.nombre}]]</td>
+                    <td>[[${p.categoria != null ? p.categoria.nombre : '-'}]]</td>
+                    <td>&#8353;[[${#numbers.formatDecimal(p.precio, 0, 'COMMA', 2, 'POINT')}]]</td>
+                    <td class="existencias">[[${p.existencias}]]</td>
+                    <td>
+                        <span class="estado-ok" th:if="${p.activo}">[[#{producto.estado.activo}]]</span>
+                        <span class="estado-agotado" th:unless="${p.activo}">[[#{producto.estado.inactivo}]]</span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn-cosmi-dark"
+                                data-bs-toggle="modal" data-bs-target="#productoModal"
+                                th:data-id="${p.idProducto}"
+                                th:data-nombre="${p.nombre}"
+                                th:data-descripcion="${p.descripcion}"
+                                th:data-precio="${p.precio}"
+                                th:data-existencias="${p.existencias}"
+                                th:data-tipopiel="${p.tipoPiel}"
+                                th:data-categoria="${p.categoria != null ? p.categoria.idCategoria : ''}">
+                            <i class="fa-solid fa-pen"></i> [[#{accion.actualizar}]]
+                        </button>
+                        <form th:action="@{/admin/productos/estado}" method="post" class="d-inline">
+                            <input type="hidden" name="idProducto" th:value="${p.idProducto}"/>
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                <span th:if="${p.activo}">[[#{producto.desactivar}]]</span>
+                                <span th:unless="${p.activo}">[[#{producto.activar}]]</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(productos)}">
+                    <td colspan="7" style="text-align:center;">[[#{lista.vacia}]]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- 3 Formulario (modal) para crear o editar -->
+<section th:fragment="formulario">
+    <div class="modal fade" id="productoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" th:action="@{/admin/productos/guardar}" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <span id="productoTituloNuevo">[[#{producto.agregar}]]</span>
+                            <span id="productoTituloEditar" class="d-none">[[#{producto.editar}]]</span>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[[#{accion.cerrar}]]"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="productoId" name="idProducto"/>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="productoNombre">[[#{producto.nombre}]]</label>
+                            <input type="text" id="productoNombre" name="nombre" class="form-control" required="required"/>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="productoDescripcion">[[#{producto.descripcion}]]</label>
+                            <input type="text" id="productoDescripcion" name="descripcion" class="form-control"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="productoPrecio">[[#{producto.precio}]]</label>
+                                <input type="number" id="productoPrecio" name="precio" class="form-control"
+                                       min="0.01" step="0.01" required="required"/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="productoExistencias">[[#{producto.existencias}]]</label>
+                                <input type="number" id="productoExistencias" name="existencias" class="form-control"
+                                       min="0" step="1" value="0" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="productoCategoria">[[#{producto.categoria}]]</label>
+                                <select id="productoCategoria" name="categoria.idCategoria" class="form-select">
+                                    <option th:each="c : ${categorias}" th:value="${c.idCategoria}"
+                                            th:text="${c.nombre}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="productoTipoPiel">[[#{producto.tipoPiel}]]</label>
+                                <select id="productoTipoPiel" name="tipoPiel" class="form-select">
+                                    <option value="todas">[[#{piel.todas}]]</option>
+                                    <option value="seca">[[#{piel.seca}]]</option>
+                                    <option value="grasa">[[#{piel.grasa}]]</option>
+                                    <option value="mixta">[[#{piel.mixta}]]</option>
+                                    <option value="normal">[[#{piel.normal}]]</option>
+                                    <option value="sensible">[[#{piel.sensible}]]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="productoImagen">[[#{producto.imagen.archivo}]]</label>
+                            <input type="file" id="productoImagen" name="imagenFile" class="form-control"
+                                   accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                                   th:data-error-tipo="#{producto.error.imagenTipo}"
+                                   th:data-error-tamano="#{producto.error.imagenTamano}"
+                                   onchange="previsualizarProducto(this)"/>
+                            <img id="productoVistaPrevia" class="d-none mt-2" style="height:120px;" alt=""/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-xmark"></i> [[#{accion.cerrar}]]
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk"></i> [[#{accion.guardar}]]
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
