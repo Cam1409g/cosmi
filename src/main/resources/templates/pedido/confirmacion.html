@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Pedido realizado')}"></head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar('carrito')}"></header>
+
+<main class="container my-4">
+    <h1>¡Pedido realizado con éxito!</h1>
+    <p>
+        Pedido número <strong>[[${pedido.id}]]</strong> &middot;
+        Estado: <strong>[[${pedido.estado}]]</strong> &middot;
+        Fecha: [[${#temporals.format(pedido.fecha, 'dd/MM/yyyy HH:mm')}]]
+    </p>
+
+    <div class="tabla-wrap">
+        <table class="tabla">
+            <thead>
+            <tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="d : ${pedido.detalles}">
+                <td class="producto" th:text="${d.producto.nombre}">Producto</td>
+                <td th:text="${d.cantidad}">1</td>
+                <td>&#8353;[[${#numbers.formatDecimal(d.precioUnitario, 0, 'COMMA', 2, 'POINT')}]]</td>
+                <td>&#8353;[[${#numbers.formatDecimal(d.precioUnitario * d.cantidad, 0, 'COMMA', 2, 'POINT')}]]</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3" style="text-align:right;"><strong>Total</strong></td>
+                <td><strong>&#8353;[[${#numbers.formatDecimal(pedido.total, 0, 'COMMA', 2, 'POINT')}]]</strong></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <a th:href="@{/}" class="btn-cosmi-outline">Seguir comprando</a>
+</main>
+</body>
+</html>

@@ -56,7 +56,12 @@
                 </tfoot>
             </table>
         </div>
+        
+                <form th:action="@{/pedido/confirmar}" method="post" class="d-inline">
+            <button type="submit" class="btn-cosmi">Realizar pedido</button>
+        </form>
 
+        
         <a th:href="@{/}" class="btn-cosmi-outline">Seguir comprando</a>
     </div>
 </main>
