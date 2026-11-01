@@ -11,6 +11,7 @@ import com.cosmi.repository.ProductoRepository;
 import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service
 public class PedidoService {
@@ -74,5 +75,49 @@ public class PedidoService {
                 .orElseThrow(() -> new IllegalArgumentException("El pedido no existe"));
         pedido.getDetalles().size(); // carga los detalles dentro de la transacción
         return pedido;
+    }
+        /** HU18: todos los pedidos, los más recientes primero. */
+    @Transactional(readOnly = true)
+    public List<Pedido> listarTodos() {
+        List<Pedido> pedidos = pedidoRepository.findAllByOrderByFechaDesc();
+        pedidos.forEach(p -> p.getDetalles().size()); // carga los detalles
+        return pedidos;
+    }
+
+    /** HU18: avanza el pedido al siguiente estado del flujo. */
+    @Transactional
+    public EstadoPedido avanzarEstado(Long idPedido) {
+        Pedido pedido = buscarPedido(idPedido);
+        EstadoPedido siguiente = switch (pedido.getEstado()) {
+            case PENDIENTE -> EstadoPedido.EN_PREPARACION;
+            case EN_PREPARACION -> EstadoPedido.EN_CAMINO;
+            case EN_CAMINO -> EstadoPedido.ENTREGADO;
+            case ENTREGADO, CANCELADO ->
+                    throw new IllegalStateException("El pedido ya está en un estado final");
+        };
+        pedido.setEstado(siguiente);
+        return siguiente;
+    }
+
+    /** HU18: cancela el pedido y devuelve el stock. Todo o nada (@Transactional). */
+    @Transactional
+    public void cancelar(Long idPedido) {
+        Pedido pedido = buscarPedido(idPedido);
+        if (pedido.getEstado() != EstadoPedido.PENDIENTE
+                && pedido.getEstado() != EstadoPedido.EN_PREPARACION) {
+            throw new IllegalStateException(
+                    "Solo se pueden cancelar pedidos pendientes o en preparación");
+        }
+        for (DetallePedido d : pedido.getDetalles()) {
+            Producto producto = productoRepository.findByIdBloqueado(d.getProducto().getId())
+                    .orElseThrow(() -> new IllegalStateException("Un producto del pedido ya no existe"));
+            producto.setStock(producto.getStock() + d.getCantidad()); // devolución de stock
+        }
+        pedido.setEstado(EstadoPedido.CANCELADO);
+    }
+
+    private Pedido buscarPedido(Long idPedido) {
+        return pedidoRepository.findById(idPedido)
+                .orElseThrow(() -> new IllegalArgumentException("El pedido no existe"));
     }
 }
