@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Inicio')}"></head>
-<body>
-<header th:replace="~{fragments/navbar :: navbar('')}"></header>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header('inicio')}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
 
-<!-- PROVISIONAL: Camila lo reemplaza con el inicio y el catálogo reales. -->
-<main class="container hero">
-    <div class="row g-5 align-items-center">
-        <div class="col-lg-6">
-            <span class="etiqueta">Cosméticos y skincare</span>
-            <h1>Tu rutina, a la medida de tu piel</h1>
-            <p>Encuentra limpiadores, sérums, protectores y maquillaje según tu tipo de piel.</p>
-            <div class="acciones">
-                <a class="btn-cosmi" th:href="@{/catalogo}">Ver catálogo</a>
-                <a class="btn-cosmi-outline" th:href="@{/registro}">Indicar mi tipo de piel</a>
+        <main class="container hero">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <span class="etiqueta" th:text="#{index.etiqueta}">Cosméticos y skincare</span>
+                    <h1 th:text="#{index.titulo}">Tu rutina, a la medida de tu piel</h1>
+                    <p th:text="#{index.texto}">Encuentra limpiadores, sérums, protectores y maquillaje según tu tipo de piel.</p>
+                    <div class="acciones">
+                        <!--/* TODO: cambiar el # por @{/catalogo} cuando exista el catálogo */-->
+                        <a href="#" class="btn-cosmi" th:text="#{index.verCatalogo}">Ver catálogo</a>
+                        <a th:href="@{/registro}" class="btn-cosmi-outline" th:text="#{index.indicarPiel}">Indicar mi tipo de piel</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="banner" th:text="#{index.banner}">Imagen principal (banner)</div>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-6">
-            <div class="banner">Imagen principal (banner)</div>
-        </div>
-    </div>
-</main>
-</body>
+        </main>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
 </html>

@@ -1,13 +1,16 @@
 package com.cosmi.service;
 
-import com.cosmi.domain.Rol;
-import com.cosmi.domain.Usuario;
+import com.cosmi.model.Rol;
+import com.cosmi.model.Usuario;
 import com.cosmi.repository.UsuarioRepository;
 import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
     private static final Set<String> TIPOS_PIEL = Set.of("seca", "grasa", "mixta", "normal", "sensible");
@@ -15,22 +18,26 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+    @Transactional(readOnly = true)
     public boolean correoExiste(String correo) {
         return usuarioRepository.existsByCorreo(correo);
     }
 
-    /**
-     * HU1: registra un cliente nuevo.
-     * El rol siempre es CLIENTE, sin importar lo que llegue del formulario.
-     * El tipo de piel solo se acepta si es uno de los valores permitidos.
-     */
+    @Transactional(readOnly = true)
+    public Usuario autenticar(String correo, String contrasena) {
+        Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
+        if (usuario == null || !usuario.isActivo()) {
+            return null;
+        }
+        if (!passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+            return null;
+        }
+        return usuario;
+    }
+
+    @Transactional
     public Usuario registrar(Usuario u) {
-        u.setId(null);
+        u.setIdUsuario(null);
         u.setRol(Rol.CLIENTE);
         u.setActivo(true);
 

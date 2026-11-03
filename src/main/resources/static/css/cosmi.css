@@ -25,13 +25,13 @@
     --fila-agotado: #fdf5f3;
     --salvia: #4f6b5d;
 
-    --bs-body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --bs-body-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     --bs-body-color: var(--ink);
     --bs-body-bg: var(--bg);
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     background: var(--bg);
     color: var(--ink);
     font-size: 15px;
@@ -151,7 +151,7 @@ a:hover { color: var(--bordo-oscuro); }
 .tabla tbody td { padding: 14px 18px; vertical-align: middle; }
 .tabla tbody tr { border-top: 1px solid #f0e9e5; }
 .tabla .producto { font-weight: 700; }
-.tabla .stock { font-weight: 700; text-align: center; }
+.tabla .existencias { font-weight: 700; text-align: center; }
 .tabla tr.fila-agotado { background: var(--fila-agotado); }
 .tabla tr.fila-bajo { background: var(--fila-bajo); }
 .estado-agotado { color: var(--err); font-weight: 600; }

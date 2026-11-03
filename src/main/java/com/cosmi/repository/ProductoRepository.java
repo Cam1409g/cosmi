@@ -1,9 +1,10 @@
 package com.cosmi.repository;
 
-import com.cosmi.domain.Producto;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.cosmi.model.Producto;
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    List<Producto> findByActivoTrueOrderByStockAsc();
+public interface ProductoRepository extends JpaRepository<Producto, Integer> {
+    List<Producto> findByActivoTrueOrderByExistenciasAsc();
+    List<Producto> findByActivoTrue();
 }

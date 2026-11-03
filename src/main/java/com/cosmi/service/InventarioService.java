@@ -1,36 +1,60 @@
 package com.cosmi.service;
 
-import com.cosmi.domain.Producto;
+import com.cosmi.model.Producto;
 import com.cosmi.repository.ProductoRepository;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class InventarioService {
 
-    public static final int STOCK_BAJO = 5;
+    
+    public static final int EXISTENCIAS_BAJAS = 5;
 
     private final ProductoRepository productoRepository;
 
-    public InventarioService(ProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
+    @Transactional(readOnly = true)
+    public List<Producto> getProductos() {
+        return productoRepository.findByActivoTrueOrderByExistenciasAsc();
     }
 
-    /** HU17 escenario 1: lista de productos activos, los de menor stock primero. */
-    public List<Producto> listar() {
-        return productoRepository.findByActivoTrueOrderByStockAsc();
-    }
-
-    /** HU17 escenario 4: rechaza cantidades negativas. */
-    @Transactional
-    public void ajustarStock(Long productoId, int nuevoStock) {
-        if (nuevoStock < 0) {
-            throw new IllegalArgumentException("El stock no puede ser negativo");
+    public long contarBajas(List<Producto> productos) {
+        long cantidad = 0;
+        for (Producto p : productos) {
+            if (p.getExistencias() > 0 && p.getExistencias() <= EXISTENCIAS_BAJAS) {
+                cantidad++;
+            }
         }
-        Producto p = productoRepository.findById(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("El producto no existe"));
-        p.setStock(nuevoStock);
-        productoRepository.save(p);
+        return cantidad;
+    }
+
+    public long contarAgotados(List<Producto> productos) {
+        long cantidad = 0;
+        for (Producto p : productos) {
+            if (p.getExistencias() == 0) {
+                cantidad++;
+            }
+        }
+        return cantidad;
+    }
+
+    @Transactional
+    public void ajustarExistencias(Integer idProducto, Integer nuevasExistencias) {
+        if (nuevasExistencias == null || nuevasExistencias < 0) {
+            throw new IllegalStateException("Las existencias deben ser un número mayor o igual a cero");
+        }
+        Producto producto = productoRepository.findById(idProducto).orElse(null);
+        if (producto == null) { 
+            throw new IllegalArgumentException("El producto no existe: " + idProducto);
+        }
+        
+        producto.setExistencias(nuevasExistencias);
+        productoRepository.save(producto);
+        log.info("Existencias del producto {} ajustadas a {}", idProducto, nuevasExistencias);
     }
 }
