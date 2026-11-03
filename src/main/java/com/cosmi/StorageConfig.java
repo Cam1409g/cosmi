@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.context.annotation.Lazy;
 
 @Configuration
 public class StorageConfig {
@@ -22,7 +21,6 @@ public class StorageConfig {
     private String jsonFile;
 
     @Bean
-    @Lazy
     public Storage storage() throws IOException {
         ClassPathResource resource = new ClassPathResource(jsonPath + File.separator + jsonFile);
         try (InputStream inputStream = resource.getInputStream()) {

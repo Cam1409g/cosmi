@@ -23,13 +23,16 @@ public class UsuarioService {
         return usuarioRepository.existsByCorreo(correo);
     }
 
-    //Devuelve el usuario si el correo y la contraseña son correctos y la cuenta está activa; si no, devuelve null
     @Transactional(readOnly = true)
     public Usuario autenticar(String correo, String contrasena) {
-        return usuarioRepository.findByCorreo(correo)
-                .filter(Usuario::isActivo)
-                .filter(u -> passwordEncoder.matches(contrasena, u.getContrasena()))
-                .orElse(null);
+        Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
+        if (usuario == null || !usuario.isActivo()) {
+            return null;
+        }
+        if (!passwordEncoder.matches(contrasena, usuario.getContrasena())) {
+            return null;
+        }
+        return usuario;
     }
 
     @Transactional

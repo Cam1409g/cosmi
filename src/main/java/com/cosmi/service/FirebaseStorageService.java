@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.context.annotation.Lazy;
 
- @Lazy
 @Service
 @RequiredArgsConstructor
 public class FirebaseStorageService {
