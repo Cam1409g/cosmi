@@ -3,12 +3,14 @@ package com.cosmi.service;
 import com.cosmi.model.Carrito;
 import com.cosmi.model.DetalleCarrito;
 import com.cosmi.model.DetallePedido;
+import com.cosmi.model.EstadoPedido;
 import com.cosmi.model.Pedido;
 import com.cosmi.model.Producto;
 import com.cosmi.repository.CarritoRepository;
 import com.cosmi.repository.PedidoRepository;
 import com.cosmi.repository.ProductoRepository;
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +61,7 @@ public class PedidoService {
         pedido.setTotal(total);
         pedido = pedidoRepository.save(pedido);
 
-        // Vacia el carrito 
+        // Vacia el carrito (orphanRemoval borra las lineas)
         carrito.getDetalles().clear();
         carritoRepository.save(carrito);
 
@@ -69,5 +71,52 @@ public class PedidoService {
     @Transactional(readOnly = true)
     public Pedido getPedido(Integer idPedido) {
         return pedidoRepository.findById(idPedido).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Pedido> listarTodos() {
+        return pedidoRepository.findAllByOrderByFechaDesc();
+    }
+
+    // HU18: avanza el pedido al siguiente estado del flujo
+    @Transactional
+    public void avanzarEstado(Integer idPedido) {
+        Pedido pedido = pedidoRepository.findByIdBloqueado(idPedido).orElse(null);
+        if (pedido == null) {
+            throw new IllegalArgumentException("Pedido no existe");
+        }
+        EstadoPedido actual = pedido.getEstado();
+        if (actual == EstadoPedido.PENDIENTE) {
+            pedido.setEstado(EstadoPedido.EN_PREPARACION);
+        } else if (actual == EstadoPedido.EN_PREPARACION) {
+            pedido.setEstado(EstadoPedido.EN_CAMINO);
+        } else if (actual == EstadoPedido.EN_CAMINO) {
+            pedido.setEstado(EstadoPedido.ENTREGADO);
+        } else {
+            throw new IllegalStateException("El pedido ya esta en un estado final");
+        }
+        pedidoRepository.save(pedido);
+    }
+
+    // HU18: cancela el pedido y devuelve las existencias a cada producto
+    @Transactional
+    public void cancelar(Integer idPedido) {
+        Pedido pedido = pedidoRepository.findByIdBloqueado(idPedido).orElse(null);
+        if (pedido == null) {
+            throw new IllegalArgumentException("Pedido no existe");
+        }
+        EstadoPedido actual = pedido.getEstado();
+        if (actual != EstadoPedido.PENDIENTE && actual != EstadoPedido.EN_PREPARACION) {
+            throw new IllegalStateException("El pedido ya no se puede cancelar");
+        }
+        for (DetallePedido d : pedido.getDetalles()) {
+            Producto producto = productoRepository.findByIdBloqueado(d.getProducto().getIdProducto()).orElse(null);
+            if (producto != null) {
+                producto.setExistencias(producto.getExistencias() + d.getCantidad());
+                productoRepository.save(producto);
+            }
+        }
+        pedido.setEstado(EstadoPedido.CANCELADO);
+        pedidoRepository.save(pedido);
     }
 }
