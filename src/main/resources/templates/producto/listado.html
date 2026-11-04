@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <div class="admin-layout">
+
+            <aside th:replace="~{general/menuAdmin :: sidebar('productos')}"></aside>
+
+            <main class="admin-main">
+                <h1>[[#{producto.listado}]]</h1>
+
+                <section th:replace="~{producto/fragmentos :: botonNuevo}"></section>
+                <section th:replace="~{producto/fragmentos :: listado}"></section>
+                <section th:replace="~{producto/fragmentos :: formulario}"></section>
+            </main>
+        </div>
+        <script th:src="@{/js/modulos/producto.js}"></script>
+    </body>
+</html>
