@@ -40,7 +40,7 @@ public class ProductoController {
         return "producto/listado";
     }
 
-    @PostMapping("/guardar")
+       @PostMapping("/guardar")
     public String guardar(@Valid Producto producto,
             BindingResult bindingResult,
             @RequestParam(value = "imagenFile", required = false) MultipartFile imagenFile,
@@ -50,6 +50,12 @@ public class ProductoController {
         if (bindingResult.hasErrors()) {
             titulo = "error";
             mensaje = "producto.error04";
+        } else if (imagenFile != null && !imagenFile.isEmpty()
+                && (imagenFile.getSize() > 2 * 1024 * 1024
+                || !("image/jpeg".equals(imagenFile.getContentType())
+                || "image/png".equals(imagenFile.getContentType())))) {
+            titulo = "error";
+            mensaje = "producto.error06";
         } else {
             try {
                 productoService.save(producto, imagenFile);
