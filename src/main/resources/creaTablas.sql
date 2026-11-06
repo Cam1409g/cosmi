@@ -56,7 +56,7 @@ CREATE TABLE producto (
   descripcion VARCHAR(255),
   precio DECIMAL(10,2) NOT NULL,
   existencias INT NOT NULL DEFAULT 0,
-  imagen VARCHAR(255),
+  imagen VARCHAR(1024),
   tipo_piel VARCHAR(20),
   activo TINYINT(1) NOT NULL DEFAULT 1,
   id_categoria INT,

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header('carrito')}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <main class="container my-4">
+            <h1>[[#{carrito.titulo}]]</h1>
+
+            <div th:if="${#lists.isEmpty(detalles)}" class="alert alert-info mt-3">
+                [[#{carrito.no_mostrar}]]
+            </div>
+
+            <div th:unless="${#lists.isEmpty(detalles)}" class="table-responsive mt-3">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>[[#{carrito.datos}]]</th>
+                            <th>[[#{producto.precio}]]</th>
+                            <th>[[#{carrito.cantidad}]]</th>
+                            <th>[[#{carrito.subtotal}]]</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="d : ${detalles}">
+                            <td th:text="${d.producto.nombre}">Producto</td>
+                            <td th:text="${#numbers.formatDecimal(d.producto.precio, 1, 'COMMA', 2, 'POINT')}">0.00</td>
+                            <td>
+                                <form th:action="@{/carrito/actualizar}" method="post" class="d-flex gap-2">
+                                    <input type="hidden" name="idDetalle" th:value="${d.idDetalleCarrito}"/>
+                                    <input type="number" name="cantidad" min="1"
+                                           th:max="${d.producto.existencias}" th:value="${d.cantidad}"
+                                           class="form-control form-control-sm" style="width: 80px;"/>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fa-solid fa-rotate"></i> [[#{accion.actualizar}]]
+                                    </button>
+                                </form>
+                            </td>
+                            <td th:text="${#numbers.formatDecimal(d.producto.precio * d.cantidad, 1, 'COMMA', 2, 'POINT')}">0.00</td>
+                            <td>
+                                <form th:action="@{/carrito/quitar}" method="post">
+                                    <input type="hidden" name="idDetalle" th:value="${d.idDetalleCarrito}"/>
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fa-solid fa-trash"></i> [[#{carrito.quitar}]]
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">[[#{carrito.totalCompra}]]</th>
+                            <th colspan="2" th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">0.00</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <form th:unless="${#lists.isEmpty(detalles)}" th:action="@{/pedido/confirmar}" method="post" class="mb-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-bag-shopping"></i> [[#{pedido.confirmar}]]
+                </button>
+            </form>        </main>
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

@@ -24,8 +24,7 @@
                     <!--/* TODO: cambiar el # por @{/catalogo} y @{/carrito} cuando existan esas pantallas */-->
                     <a href="#" th:classappend="${seccion == 'catalogo'} ? 'activo'"
                        th:text="#{plantilla.catalogo}">Catálogo</a>
-                    <a href="#" class="btn-carrito" th:text="#{plantilla.carrito}">Carrito</a>
-
+<a th:href="@{/carrito}" class="btn-carrito" th:text="#{plantilla.carrito}">Carrito</a>
                     <th:block th:if="${session.nombreUsuario != null}">
                         <a th:if="${session.rolUsuario == 'ADMIN'}" th:href="@{/admin/inventario}"
                            th:text="#{plantilla.admin}">Administración</a>
