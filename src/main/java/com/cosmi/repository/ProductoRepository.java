@@ -25,4 +25,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     public List<Producto> findByTipoPielAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(String tipoPiel, double precioInf, double precioSup);
 
     public List<Producto> findByCategoriaIdCategoriaAndTipoPielAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(Integer idCategoria, String tipoPiel, double precioInf, double precioSup);
+
+    //HU16: para saber si una categoría tiene productos activos
+    public boolean existsByCategoriaIdCategoriaAndActivoTrue(Integer idCategoria);
 }

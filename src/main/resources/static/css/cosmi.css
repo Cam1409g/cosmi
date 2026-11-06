@@ -1,7 +1,4 @@
-/* ==========================================================
-   Cosmi · estilos globales (paleta y tipografía del prototipo de Figma)
-   Se carga DESPUÉS de Bootstrap para sobrescribir sus colores.
-   ========================================================== */
+/* Estilos de Cosmi con la paleta del prototipo de Figma, se carga después de Bootstrap */
 :root {
     --ink: #2b2326;
     --muted: #6b5a5f;
@@ -187,9 +184,16 @@ a:hover { color: var(--bordo-oscuro); }
 .etiqueta-piel { background: var(--ok-bg); color: var(--ok); font-size: 12px; padding: 4px 10px; border-radius: 999px; }
 .etiqueta-quedan { background: var(--err-bg); color: var(--err); font-size: 12px; padding: 4px 10px; border-radius: 999px; }
 
+/* ---------- Acciones tipo link en las tablas del admin ---------- */
+.link-accion { background: none; border: 0; padding: 0; font-weight: 600; font-size: 13px; color: var(--ink); cursor: pointer; }
+.link-accion:hover { text-decoration: underline; }
+.link-peligro { color: var(--err); }
+.link-ok { color: var(--ok); }
+
 @media (max-width: 768px) {
     .admin-layout { flex-direction: column; }
     .admin-sidebar { width: 100%; }
     .hero h1 { font-size: 38px; }
     .cosmi-nav { height: auto; padding: 14px 0; }
 }
+

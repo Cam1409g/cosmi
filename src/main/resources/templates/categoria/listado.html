@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <div class="admin-layout">
+            <aside th:replace="~{general/menuAdmin :: sidebar('categorias')}"></aside>
+
+            <main class="admin-main">
+                <h1>[[#{sidebar.categorias}]]</h1>
+                <div class="row g-4 align-items-start">
+                    <div class="col-lg-8">
+                        <section th:replace="~{categoria/fragmentos :: listado}"></section>
+                    </div>
+                    <div class="col-lg-4">
+                        <section th:replace="~{categoria/fragmentos :: formulario}"></section>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <script th:src="@{/js/modulos/categoria.js}"></script>
+    </body>
+</html>
