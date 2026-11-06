@@ -1,6 +1,6 @@
 package com.cosmi.repository;
 
-import com.cosmi.model.Categoria;
+import com.cosmi.domain.Categoria;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

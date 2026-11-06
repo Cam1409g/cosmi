@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header('catalogo')}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <main class="container py-4">
+            <div class="row g-4">
+                <aside class="col-lg-3">
+                    <section th:replace="~{consultas/fragmentos :: filtros}"></section>
+                </aside>
+
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h1 class="h3 mb-0">
+                            <th:block th:if="${nombre != null}">[[#{catalogo.resultados}]] "[[${nombre}]]"</th:block>
+                            <th:block th:if="${nombre == null and idCategoriaFiltro == null and tipoPiel == null}">[[#{catalogo.titulo}]]</th:block>
+                            <th:block th:each="c : ${categorias}" th:if="${idCategoriaFiltro != null and idCategoriaFiltro.equals(c.idCategoria)}">[[${c.nombre}]]</th:block>
+                            <th:block th:if="${idCategoriaFiltro != null and tipoPiel != null}"> · </th:block>
+                            <th:block th:if="${tipoPiel != null}">[[#{catalogo.piel}]] [[#{${'piel.' + tipoPiel}}]]</th:block>
+                        </h1>
+                        <span class="text-muted small">[[${#lists.size(productos)}]] [[#{catalogo.productos}]]</span>
+                    </div>
+                    <section th:replace="~{consultas/fragmentos :: tarjetas(0)}"></section>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

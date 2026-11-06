@@ -1,11 +1,11 @@
 package com.cosmi.service;
 
-import com.cosmi.model.Carrito;
-import com.cosmi.model.DetalleCarrito;
-import com.cosmi.model.DetallePedido;
-import com.cosmi.model.EstadoPedido;
-import com.cosmi.model.Pedido;
-import com.cosmi.model.Producto;
+import com.cosmi.domain.Carrito;
+import com.cosmi.domain.DetalleCarrito;
+import com.cosmi.domain.DetallePedido;
+import com.cosmi.domain.EstadoPedido;
+import com.cosmi.domain.Pedido;
+import com.cosmi.domain.Producto;
 import com.cosmi.repository.CarritoRepository;
 import com.cosmi.repository.PedidoRepository;
 import com.cosmi.repository.ProductoRepository;
@@ -23,8 +23,7 @@ public class PedidoService {
     private final CarritoRepository carritoRepository;
     private final ProductoRepository productoRepository;
 
-    // HU8: todo ocurre en una sola transaccion. Si algo falla (RuntimeException),
-    // se revierte TODO: no se crea el pedido, no se descuenta stock y el carrito queda igual.
+   //HU8: se realiza el pedido, si algo falla no se guarda nada
     @Transactional
     public Pedido realizarPedido(Integer idUsuario) {
         Carrito carrito = carritoRepository.findByUsuarioIdUsuario(idUsuario).orElse(null);
@@ -37,8 +36,7 @@ public class PedidoService {
         BigDecimal total = BigDecimal.ZERO;
 
         for (DetalleCarrito d : carrito.getDetalles()) {
-            // Bloquea la fila del producto para que otra compra no reste el mismo stock a la vez
-            Producto producto = productoRepository.findByIdBloqueado(d.getProducto().getIdProducto()).orElse(null);
+            Producto producto = productoRepository.findById(d.getProducto().getIdProducto()).orElse(null);
             if (producto == null) {
                 throw new IllegalArgumentException("Producto no existe");
             }
@@ -61,7 +59,7 @@ public class PedidoService {
         pedido.setTotal(total);
         pedido = pedidoRepository.save(pedido);
 
-        // Vacia el carrito (orphanRemoval borra las lineas)
+        // Vacia el carrito
         carrito.getDetalles().clear();
         carritoRepository.save(carrito);
 
@@ -81,7 +79,7 @@ public class PedidoService {
     // HU18: avanza el pedido al siguiente estado del flujo
     @Transactional
     public void avanzarEstado(Integer idPedido) {
-        Pedido pedido = pedidoRepository.findByIdBloqueado(idPedido).orElse(null);
+        Pedido pedido = pedidoRepository.findById(idPedido).orElse(null);
         if (pedido == null) {
             throw new IllegalArgumentException("Pedido no existe");
         }
@@ -101,7 +99,7 @@ public class PedidoService {
     // HU18: cancela el pedido y devuelve las existencias a cada producto
     @Transactional
     public void cancelar(Integer idPedido) {
-        Pedido pedido = pedidoRepository.findByIdBloqueado(idPedido).orElse(null);
+        Pedido pedido = pedidoRepository.findById(idPedido).orElse(null);
         if (pedido == null) {
             throw new IllegalArgumentException("Pedido no existe");
         }
@@ -110,7 +108,7 @@ public class PedidoService {
             throw new IllegalStateException("El pedido ya no se puede cancelar");
         }
         for (DetallePedido d : pedido.getDetalles()) {
-            Producto producto = productoRepository.findByIdBloqueado(d.getProducto().getIdProducto()).orElse(null);
+            Producto producto = productoRepository.findById(d.getProducto().getIdProducto()).orElse(null);
             if (producto != null) {
                 producto.setExistencias(producto.getExistencias() + d.getCantidad());
                 productoRepository.save(producto);

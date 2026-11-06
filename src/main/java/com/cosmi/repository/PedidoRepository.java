@@ -1,19 +1,12 @@
 package com.cosmi.repository;
 
-import com.cosmi.model.Pedido;
-import jakarta.persistence.LockModeType;
+import com.cosmi.domain.Pedido;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
     List<Pedido> findAllByOrderByFechaDesc();
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select p from Pedido p where p.idPedido = :id")
-    Optional<Pedido> findByIdBloqueado(@Param("id") Integer id);
+  
 }

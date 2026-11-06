@@ -1,6 +1,6 @@
 package com.cosmi.service;
 
-import com.cosmi.model.Producto;
+import com.cosmi.domain.Producto;
 import com.cosmi.repository.ProductoRepository;
 import java.io.IOException;
 import java.util.List;
@@ -73,5 +73,25 @@ public class ProductoService {
             throw new IllegalArgumentException("El producto no existe: " + idProducto);
         }
         producto.setActivo(!producto.isActivo());
+    }
+
+    //HU3: se llama a la consulta derivada que busca por nombre
+    @Transactional(readOnly = true)
+    public List<Producto> buscarPorNombre(String nombre) {
+        return productoRepository.findByNombreContainingIgnoreCaseAndActivoTrueOrderByNombreAsc(nombre.trim());
+    }
+
+    //HU5: se llaman las consultas derivadas según los filtros
+    @Transactional(readOnly = true)
+    public List<Producto> consultaFiltros(Integer idCategoria, String tipoPiel, double precioInf, double precioSup) {
+        if (idCategoria != null && tipoPiel != null) { //categoría, tipo de piel y precio
+            return productoRepository.findByCategoriaIdCategoriaAndTipoPielAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(idCategoria, tipoPiel, precioInf, precioSup);
+        } else if (idCategoria != null) { //categoría y precio
+            return productoRepository.findByCategoriaIdCategoriaAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(idCategoria, precioInf, precioSup);
+        } else if (tipoPiel != null) { //tipo de piel y precio
+            return productoRepository.findByTipoPielAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(tipoPiel, precioInf, precioSup);
+        } else { //solo precio
+            return productoRepository.findByPrecioBetweenAndActivoTrueOrderByPrecioAsc(precioInf, precioSup);
+        }
     }
 }

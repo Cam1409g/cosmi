@@ -1,6 +1,6 @@
 package com.cosmi.repository;
 
-import com.cosmi.model.Usuario;
+import com.cosmi.domain.Usuario;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

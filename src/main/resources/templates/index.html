@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
     <head th:replace="~{general/fragmentos :: head}"></head>
     <body>
         <header th:replace="~{general/fragmentos :: header('inicio')}"></header>
         <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
 
+        <!-- Banner principal -->
         <main class="container hero">
             <div class="row align-items-center g-4">
                 <div class="col-lg-6">
@@ -12,16 +14,30 @@
                     <h1 th:text="#{index.titulo}">Tu rutina, a la medida de tu piel</h1>
                     <p th:text="#{index.texto}">Encuentra limpiadores, sérums, protectores y maquillaje según tu tipo de piel.</p>
                     <div class="acciones">
-                        <!--/* TODO: cambiar el # por @{/catalogo} cuando exista el catálogo */-->
-                        <a href="#" class="btn-cosmi" th:text="#{index.verCatalogo}">Ver catálogo</a>
+                        <a th:href="@{/consultas/listado}" class="btn-cosmi" th:text="#{index.verCatalogo}">Ver catálogo</a>
                         <a th:href="@{/registro}" class="btn-cosmi-outline" th:text="#{index.indicarPiel}">Indicar mi tipo de piel</a>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="banner" th:text="#{index.banner}">Imagen principal (banner)</div>
+                    <img src="https://images.unsplash.com/photo-1785581778868-79100f7fe56c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+                         th:alt="#{aplicacion.titulo}" class="img-fluid rounded-4 w-100 shadow-sm"
+                         style="height: 420px; object-fit: cover;"/>
                 </div>
             </div>
         </main>
+
+        <!-- Categorías en tarjetas -->
+        <section th:replace="~{consultas/fragmentos :: categoriasInicio}"></section>
+
+        <!-- Primeros 4 productos -->
+        <section class="container pb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">[[#{index.nuestrosProductos}]]</h3>
+                <a th:href="@{/consultas/listado}" class="small">[[#{index.verTodo}]]</a>
+            </div>
+            <section th:replace="~{consultas/fragmentos :: tarjetas(4)}"></section>
+        </section>
+
         <footer th:replace="~{general/fragmentos :: footer}"></footer>
     </body>
 </html>

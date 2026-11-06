@@ -1,6 +1,6 @@
 package com.cosmi.repository;
 
-import com.cosmi.model.Carrito;
+import com.cosmi.domain.Carrito;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

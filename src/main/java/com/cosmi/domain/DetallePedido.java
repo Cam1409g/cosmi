@@ -1,25 +1,28 @@
-package com.cosmi.model;
+package com.cosmi.domain;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-public class DetalleCarrito {
+public class DetallePedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idDetalleCarrito;
+    private Integer idDetallePedido;
 
     @ManyToOne
-    @JoinColumn(name = "id_carrito")
-    private Carrito carrito;
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 
     @ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
     private int cantidad;
+
+    private BigDecimal precioUnitario;
 }

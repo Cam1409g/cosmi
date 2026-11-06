@@ -1,21 +1,28 @@
 package com.cosmi.repository;
 
-import com.cosmi.model.Producto;
-import jakarta.persistence.LockModeType;
+import com.cosmi.domain.Producto;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
-    List<Producto> findByActivoTrueOrderByExistenciasAsc();
+    //Consulta derivada para recuperar solo los productos activos
+    public List<Producto> findByActivoTrue();
 
-    List<Producto> findByActivoTrue();
+    //Productos activos ordenados por existencias, los que tienen menos primero (inventario)
+    public List<Producto> findByActivoTrueOrderByExistenciasAsc();
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select p from Producto p where p.idProducto = :id")
-    Optional<Producto> findByIdBloqueado(@Param("id") Integer id);
+    //Consulta derivada para buscar productos activos que contengan el texto en su nombre
+    public List<Producto> findByNombreContainingIgnoreCaseAndActivoTrueOrderByNombreAsc(String nombre);
+
+    //HU5: consultas derivadas para los filtros, todas con un rango de precio ordenado ascendentemente
+    public List<Producto> findByPrecioBetweenAndActivoTrueOrderByPrecioAsc(double precioInf, double precioSup);
+
+    public List<Producto> findByCategoriaIdCategoriaAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(Integer idCategoria, double precioInf, double precioSup);
+
+    public List<Producto> findByTipoPielAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(String tipoPiel, double precioInf, double precioSup);
+
+    public List<Producto> findByCategoriaIdCategoriaAndTipoPielAndPrecioBetweenAndActivoTrueOrderByPrecioAsc(Integer idCategoria, String tipoPiel, double precioInf, double precioSup);
 }

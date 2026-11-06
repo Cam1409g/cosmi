@@ -1,0 +1,107 @@
+<!-- Fragmento #1 con la búsqueda y los filtros del catálogo (columna izquierda) -->
+<section th:fragment="filtros">
+    <form th:action="@{/consultas/buscar}" method="get" class="mb-4">
+        <label for="nombre" class="form-label fw-semibold small">[[#{filtro.nombre}]]</label>
+        <input type="text" id="nombre" name="nombre" th:value="${nombre}" class="form-control"
+               th:placeholder="#{busqueda.placeholder}"/>
+    </form>
+
+    <form th:action="@{/consultas/filtrar}" method="get">
+        <h6 class="fw-semibold">[[#{filtro.categoria.titulo}]]</h6>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="idCategoria" id="catTodas" value=""
+                   th:checked="${idCategoriaFiltro == null}"/>
+            <label class="form-check-label" for="catTodas">[[#{filtro.categoria}]]</label>
+        </div>
+        <div class="form-check" th:each="c : ${categorias}">
+            <input class="form-check-input" type="radio" name="idCategoria"
+                   th:id="'cat' + ${c.idCategoria}" th:value="${c.idCategoria}"
+                   th:checked="${idCategoriaFiltro != null and idCategoriaFiltro.equals(c.idCategoria)}"/>
+            <label class="form-check-label" th:for="'cat' + ${c.idCategoria}">[[${c.nombre}]]</label>
+        </div>
+
+        <h6 class="fw-semibold mt-4">[[#{filtro.tipoPiel.titulo}]]</h6>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoPiel" id="pielTodas" value=""
+                   th:checked="${tipoPiel == null}"/>
+            <label class="form-check-label" for="pielTodas">[[#{filtro.tipoPiel}]]</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoPiel" id="pielSeca" value="seca"
+                   th:checked="${tipoPiel == 'seca'}"/>
+            <label class="form-check-label" for="pielSeca">[[#{piel.seca}]]</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoPiel" id="pielGrasa" value="grasa"
+                   th:checked="${tipoPiel == 'grasa'}"/>
+            <label class="form-check-label" for="pielGrasa">[[#{piel.grasa}]]</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoPiel" id="pielMixta" value="mixta"
+                   th:checked="${tipoPiel == 'mixta'}"/>
+            <label class="form-check-label" for="pielMixta">[[#{piel.mixta}]]</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoPiel" id="pielNormal" value="normal"
+                   th:checked="${tipoPiel == 'normal'}"/>
+            <label class="form-check-label" for="pielNormal">[[#{piel.normal}]]</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="tipoPiel" id="pielSensible" value="sensible"
+                   th:checked="${tipoPiel == 'sensible'}"/>
+            <label class="form-check-label" for="pielSensible">[[#{piel.sensible}]]</label>
+        </div>
+
+        <h6 class="fw-semibold mt-4">[[#{filtro.precio}]]</h6>
+        <div class="row g-2">
+            <div class="col-6">
+                <label for="precioInf" class="form-label small">[[#{filtro.minimo}]]</label>
+                <input type="number" id="precioInf" name="precioInf" th:value="${precioInf}"
+                       min="0" class="form-control" placeholder="0"/>
+            </div>
+            <div class="col-6">
+                <label for="precioSup" class="form-label small">[[#{filtro.maximo}]]</label>
+                <input type="number" id="precioSup" name="precioSup" th:value="${precioSup}"
+                       min="0" class="form-control" placeholder="20000"/>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-cosmi w-100 mt-4">[[#{filtro.aplicar}]]</button>
+        <a th:href="@{/consultas/listado}" class="btn-cosmi-outline d-block text-center mt-2">[[#{filtro.limpiar}]]</a>
+    </form>
+</section>
+
+<!-- Fragmento #2 para mostrar los productos en tarjetas (limite 0 = todos) -->
+<section th:fragment="tarjetas(limite)">
+    <div th:if="${errorConsulta != null}" class="alert alert-warning">[[${errorConsulta}]]</div>
+    <div th:if="${errorConsulta == null and (productos == null or productos.empty)}" class="text-center text-muted py-4">
+        [[#{busqueda.sinResultados}]]
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+        <div class="col" th:each="p, stat : ${productos}" th:if="${limite == 0 or stat.index < limite}">
+            <a th:href="@{/consultas/detalle/{id}(id=${p.idProducto})}" class="producto-card">
+                <div class="producto-foto">
+                    <img th:if="${p.imagen != null}" th:src="${p.imagen}" th:alt="${p.nombre}"/>
+                </div>
+                <div class="producto-info">
+                    <span class="producto-etiqueta">
+                        [[${p.categoria != null ? p.categoria.nombre : ''}]]<th:block th:if="${p.tipoPiel != null}"> · [[#{${'piel.' + p.tipoPiel}}]]</th:block>
+                    </span>
+                    <span class="producto-nombre">[[${p.nombre}]]</span>
+                    <span class="producto-precio">[[${#numbers.formatCurrency(p.precio)}]]</span>
+                    <span th:if="${p.existencias == 0}" class="producto-agotado">[[#{producto.agotado}]]</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Fragmento #3 con las categorías en tarjetas para la página de inicio -->
+<section th:fragment="categoriasInicio" class="container py-4">
+    <h3 class="mb-3">[[#{index.categorias}]]</h3>
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        <div class="col" th:each="c : ${categorias}">
+            <a th:href="@{/consultas/filtrar(idCategoria=${c.idCategoria})}" class="categoria-card">[[${c.nombre}]]</a>
+        </div>
+    </div>
+</section>

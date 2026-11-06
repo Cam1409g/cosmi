@@ -12,38 +12,35 @@
 </head>
 
 
-<!-- Fragmento #2 define el encabezado de las páginas, en concreto el menú y enlaces rápidos.
-     Uso: <header th:replace="~{general/fragmentos :: header('inicio')}"></header>
-     (el menú es provisional: Camila y Geo lo ajustan con el Figma) -->
+<!-- Fragmento #2 define el encabezado de las páginas -->
 <header th:fragment="header(seccion)" class="cosmi-nav">
-            <div class="container nav-inner">
-                <a class="brand" th:href="@{/}">Cosmi</a>
-                <nav class="nav-links">
-                    <a th:href="@{/}" th:classappend="${seccion == 'inicio'} ? 'activo'"
-                       th:text="#{plantilla.inicio}">Inicio</a>
-                    <!--/* TODO: cambiar el # por @{/catalogo} y @{/carrito} cuando existan esas pantallas */-->
-                    <a href="#" th:classappend="${seccion == 'catalogo'} ? 'activo'"
-                       th:text="#{plantilla.catalogo}">Catálogo</a>
-<a th:href="@{/carrito}" class="btn-carrito" th:text="#{plantilla.carrito}">Carrito</a>
-                    <th:block th:if="${session.nombreUsuario != null}">
-                        <a th:if="${session.rolUsuario == 'ADMIN'}" th:href="@{/admin/inventario}"
-                           th:text="#{plantilla.admin}">Administración</a>
-                        <span class="saludo" th:text="#{plantilla.saludo} + ' ' + ${session.nombreUsuario}">Hola,</span>
-                        <a th:href="@{/logout}" class="link-salir" th:text="#{plantilla.salir}">Salir</a>
-                    </th:block>
-                    <a th:if="${session.nombreUsuario == null}" th:href="@{/login}"
-                       th:classappend="${seccion == 'acceso'} ? 'activo'"
-                       th:text="#{plantilla.iniciarSesion}">Iniciar sesión</a>
+    <div class="container nav-inner">
+        <a class="brand" th:href="@{/}">Cosmi</a>
+        <nav class="nav-links">
+            <a th:href="@{/}" th:classappend="${seccion == 'inicio'} ? 'activo'"
+               th:text="#{plantilla.inicio}">Inicio</a>
+            <a th:href="@{/consultas/listado}" th:classappend="${seccion == 'catalogo'} ? 'activo'"
+               th:text="#{plantilla.catalogo}">Catálogo</a>
+            <a th:href="@{/carrito}" class="btn-carrito" th:text="#{plantilla.carrito}">Carrito</a>
+            <th:block th:if="${session.nombreUsuario != null}">
+                <a th:if="${session.rolUsuario == 'ADMIN'}" th:href="@{/admin/inventario}"
+                   th:text="#{plantilla.admin}">Administración</a>
+                <span class="saludo" th:text="#{plantilla.saludo} + ' ' + ${session.nombreUsuario}">Hola,</span>
+                <a th:href="@{/logout}" class="link-salir" th:text="#{plantilla.salir}">Salir</a>
+            </th:block>
+            <a th:if="${session.nombreUsuario == null}" th:href="@{/login}"
+               th:classappend="${seccion == 'acceso'} ? 'activo'"
+               th:text="#{plantilla.iniciarSesion}">Iniciar sesión</a>
 
-                    <span class="saludo">
-                        <a th:href="@{(lang='es')}">ES</a> ·
-                        <a th:href="@{(lang='en')}">EN</a> ·
-                        <a th:href="@{(lang='fr')}">FR</a> ·
-                        <a th:href="@{(lang='pt')}">PT</a>
-                    </span>
-                </nav>
-            </div>
-        </header>
+            <span class="saludo">
+                <a th:href="@{(lang='es')}">ES</a> ·
+                <a th:href="@{(lang='en')}">EN</a> ·
+                <a th:href="@{(lang='fr')}">FR</a> ·
+                <a th:href="@{(lang='pt')}">PT</a>
+            </span>
+        </nav>
+    </div>
+</header>
 
 <!-- Fragmento #3 define el footer de las páginas -->
 <footer th:fragment="footer" class="p-2 mt-5 text-center d-print-none">

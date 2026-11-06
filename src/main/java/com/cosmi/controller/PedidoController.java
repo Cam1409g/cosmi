@@ -1,11 +1,11 @@
 package com.cosmi.controller;
 
-import com.cosmi.model.Pedido;
+import com.cosmi.domain.Pedido;
 import com.cosmi.service.PedidoService;
 import jakarta.servlet.http.HttpSession;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +40,7 @@ public class PedidoController {
             mensaje = "pedido.error.general";
         }
         redirectAttributes.addFlashAttribute("error",
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
         return "redirect:/carrito";
     }
 

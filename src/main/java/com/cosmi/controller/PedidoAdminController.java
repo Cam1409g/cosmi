@@ -1,9 +1,9 @@
 package com.cosmi.controller;
 
 import com.cosmi.service.PedidoService;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +44,7 @@ public class PedidoAdminController {
             mensaje = "pedido.error.general";
         }
         redirectAttributes.addFlashAttribute(titulo,
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
         return "redirect:/admin/pedidos";
     }
 
@@ -65,7 +65,7 @@ public class PedidoAdminController {
             mensaje = "pedido.error.general";
         }
         redirectAttributes.addFlashAttribute(titulo,
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
         return "redirect:/admin/pedidos";
     }
 }

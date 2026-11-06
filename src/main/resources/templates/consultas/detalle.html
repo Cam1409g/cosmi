@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{general/fragmentos :: head}"></head>
+    <body>
+        <header th:replace="~{general/fragmentos :: header('catalogo')}"></header>
+        <section th:replace="~{general/fragmentos :: mostrarToast}"></section>
+
+        <main class="container py-4">
+            <nav class="small mb-3">
+                <a th:href="@{/consultas/listado}">[[#{catalogo.titulo}]]</a>
+                <th:block th:if="${producto.categoria != null}"> /
+                    <a th:href="@{/consultas/filtrar(idCategoria=${producto.categoria.idCategoria})}">[[${producto.categoria.nombre}]]</a>
+                </th:block>
+                / <span class="text-muted">[[${producto.nombre}]]</span>
+            </nav>
+
+            <div class="row g-5">
+                <div class="col-md-6">
+                    <div class="detalle-foto">
+                        <img th:if="${producto.imagen != null}" th:src="${producto.imagen}" th:alt="${producto.nombre}"/>
+                        <span th:if="${producto.imagen == null}" class="text-muted">[[#{detalle.sinImagen}]]</span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <span class="producto-etiqueta" th:if="${producto.categoria != null}">[[${producto.categoria.nombre}]]</span>
+                    <h1 class="mt-1">[[${producto.nombre}]]</h1>
+                    <p class="fs-3 fw-bold">[[${#numbers.formatCurrency(producto.precio)}]]</p>
+
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span th:if="${producto.tipoPiel != null}" class="etiqueta-piel">[[#{catalogo.piel}]] [[#{${'piel.' + producto.tipoPiel}}]]</span>
+                        <span th:if="${producto.existencias > 5}" class="etiqueta-piel">[[${producto.existencias}]] [[#{producto.unidades}]]</span>
+                        <span th:if="${producto.existencias > 0 and producto.existencias <= 5}" class="etiqueta-quedan">[[#{detalle.quedan}]] [[${producto.existencias}]]</span>
+                        <span th:if="${producto.existencias == 0}" class="etiqueta-quedan">[[#{producto.agotado}]]</span>
+                    </div>
+
+                    <p th:if="${producto.descripcion != null and !producto.descripcion.isBlank()}">[[${producto.descripcion}]]</p>
+                    <p th:unless="${producto.descripcion != null and !producto.descripcion.isBlank()}" class="text-muted">[[#{detalle.sinDescripcion}]]</p>
+
+                    <form th:if="${session.idUsuario != null}" th:action="@{/carrito/agregar}" method="post">
+                        <label for="cantidad" class="form-label small fw-semibold">[[#{detalle.cantidad}]]</label>
+                        <div class="d-flex gap-2">
+                            <input type="hidden" name="idProducto" th:value="${producto.idProducto}"/>
+                            <input type="number" id="cantidad" name="cantidad" value="1" min="1" th:max="${producto.existencias}"
+                                   class="form-control" style="width: 90px;" th:disabled="${producto.existencias == 0}"/>
+                            <button type="submit" class="btn-cosmi flex-grow-1" th:disabled="${producto.existencias == 0}">
+                                [[#{detalle.agregarCarrito}]]
+                            </button>
+                        </div>
+                    </form>
+                    <a th:if="${session.idUsuario == null}" th:href="@{/login}" class="btn-cosmi d-inline-block">[[#{detalle.iniciarSesion}]]</a>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+    </body>
+</html>

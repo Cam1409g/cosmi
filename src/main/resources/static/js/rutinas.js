@@ -2,7 +2,7 @@
 function mostrarImagen(input, previewId = 'blah') {
     if (input.files && input.files[0]) {
         const imagen = input.files[0];
-        const maximo = 512 * 1024; //Se limita el tamaño a 512 Kb las imágenes.
+        const maximo = 2 * 1024 * 1024; //Se limita el tamaño a 2 MB las imágenes.
         if (imagen.size <= maximo) {
             var lector = new FileReader();
             lector.onload = function (e) {
@@ -10,10 +10,10 @@ function mostrarImagen(input, previewId = 'blah') {
             };
             lector.readAsDataURL(input.files[0]);
         } else {
-            alert("La imagen seleccionada es muy grande... no debe superar los 512 Kb!");
+            alert("La imagen seleccionada es muy grande... no debe superar los 2 MB!");
             input.value = '';
         }
-}
+    }
 }
 
 //Para insertar información en el modal según el registro...

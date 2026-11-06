@@ -33,7 +33,7 @@ public class ProjectConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         var slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.of("es"));
+        slr.setDefaultLocale(Locale.of("es", "CR"));
         slr.setLocaleAttributeName("session.current.locale");
         slr.setTimeZoneAttributeName("session.current.timezone");
         return slr;
@@ -57,7 +57,6 @@ public class ProjectConfig implements WebMvcConfigurer {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setFallbackToSystemLocale(false); // si el idioma no existe se usa messages.properties (español)
         return messageSource;
     }
 

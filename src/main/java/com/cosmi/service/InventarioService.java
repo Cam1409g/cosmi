@@ -1,6 +1,6 @@
 package com.cosmi.service;
 
-import com.cosmi.model.Producto;
+import com.cosmi.domain.Producto;
 import com.cosmi.repository.ProductoRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

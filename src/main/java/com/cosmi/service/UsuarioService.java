@@ -1,7 +1,7 @@
 package com.cosmi.service;
 
-import com.cosmi.model.Rol;
-import com.cosmi.model.Usuario;
+import com.cosmi.domain.Rol;
+import com.cosmi.domain.Usuario;
 import com.cosmi.repository.UsuarioRepository;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.cosmi.model;
+package com.cosmi.domain;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;

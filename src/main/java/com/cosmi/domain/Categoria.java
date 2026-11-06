@@ -1,9 +1,11 @@
-package com.cosmi.model;
+package com.cosmi.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Categoria {
 

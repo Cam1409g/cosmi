@@ -1,9 +1,9 @@
 package com.cosmi.service;
 
-import com.cosmi.model.Carrito;
-import com.cosmi.model.DetalleCarrito;
-import com.cosmi.model.Producto;
-import com.cosmi.model.Usuario;
+import com.cosmi.domain.Carrito;
+import com.cosmi.domain.DetalleCarrito;
+import com.cosmi.domain.Producto;
+import com.cosmi.domain.Usuario;
 import com.cosmi.repository.CarritoRepository;
 import com.cosmi.repository.ProductoRepository;
 import com.cosmi.repository.UsuarioRepository;
@@ -20,7 +20,7 @@ public class CarritoService {
     private final ProductoRepository productoRepository;
     private final UsuarioRepository usuarioRepository;
 
-    // Devuelve el carrito del usuario; si no tiene, lo crea vacio
+    // Devuelve el carrito del usuario... si no tiene, lo crea vacio
     @Transactional
     public Carrito obtenerOCrear(Integer idUsuario) {
         Carrito carrito = carritoRepository.findByUsuarioIdUsuario(idUsuario).orElse(null);
@@ -96,7 +96,7 @@ public class CarritoService {
         throw new IllegalArgumentException("Linea no existe");
     }
 
-    // HU7: quitar una linea (orphanRemoval la borra de la base)
+    //HU7: quitar un producto del carrito
     @Transactional
     public void quitar(Integer idUsuario, Integer idDetalle) {
         Carrito carrito = obtenerOCrear(idUsuario);

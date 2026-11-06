@@ -1,12 +1,12 @@
 package com.cosmi.controller;
 
-import com.cosmi.model.Producto;
+import com.cosmi.domain.Producto;
 import com.cosmi.service.CategoriaService;
 import com.cosmi.service.ProductoService;
 import jakarta.validation.Valid;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +40,7 @@ public class ProductoController {
         return "producto/listado";
     }
 
-       @PostMapping("/guardar")
+    @PostMapping("/guardar")
     public String guardar(@Valid Producto producto,
             BindingResult bindingResult,
             @RequestParam(value = "imagenFile", required = false) MultipartFile imagenFile,
@@ -50,12 +50,6 @@ public class ProductoController {
         if (bindingResult.hasErrors()) {
             titulo = "error";
             mensaje = "producto.error04";
-        } else if (imagenFile != null && !imagenFile.isEmpty()
-                && (imagenFile.getSize() > 2 * 1024 * 1024
-                || !("image/jpeg".equals(imagenFile.getContentType())
-                || "image/png".equals(imagenFile.getContentType())))) {
-            titulo = "error";
-            mensaje = "producto.error06";
         } else {
             try {
                 productoService.save(producto, imagenFile);
@@ -65,7 +59,7 @@ public class ProductoController {
             }
         }
         redirectAttributes.addFlashAttribute(titulo,
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
 
         return "redirect:/admin/productos";
     }
@@ -88,7 +82,7 @@ public class ProductoController {
             mensaje = "producto.error03";
         }
         redirectAttributes.addFlashAttribute(titulo,
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
 
         return "redirect:/admin/productos";
     }
@@ -106,7 +100,7 @@ public class ProductoController {
             mensaje = "producto.error01";
         }
         redirectAttributes.addFlashAttribute(titulo,
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
 
         return "redirect:/admin/productos";
     }

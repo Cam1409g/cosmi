@@ -1,3 +1,3 @@
-package com.cosmi.model;
+package com.cosmi.domain;
 
 public enum Rol { CLIENTE, ADMIN }

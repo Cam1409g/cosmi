@@ -1,11 +1,11 @@
 package com.cosmi.controller;
 
-import com.cosmi.model.Producto;
+import com.cosmi.domain.Producto;
 import com.cosmi.service.InventarioService;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +53,7 @@ public class InventarioController {
             mensaje = "inventario.error03";
         }
         redirectAttributes.addFlashAttribute(titulo,
-                messageSource.getMessage(mensaje, null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage(mensaje, null, Locale.getDefault()));
         return "redirect:/admin/inventario";
     }
 }

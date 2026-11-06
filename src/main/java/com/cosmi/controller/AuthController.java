@@ -1,12 +1,12 @@
 package com.cosmi.controller;
 
-import com.cosmi.model.Usuario;
+import com.cosmi.domain.Usuario;
 import com.cosmi.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +38,7 @@ public class AuthController {
         Usuario usuario = usuarioService.autenticar(correo, contrasena);
         if (usuario == null) {
             redirectAttributes.addFlashAttribute("error",
-                    messageSource.getMessage("error.login", null, LocaleContextHolder.getLocale()));
+                    messageSource.getMessage("error.login", null, Locale.getDefault()));
             return "redirect:/login";
         }
         session.setAttribute("idUsuario", usuario.getIdUsuario());
@@ -66,14 +66,14 @@ public class AuthController {
             RedirectAttributes redirectAttributes) {
         if (!result.hasFieldErrors("correo") && usuarioService.correoExiste(usuario.getCorreo())) {
             result.rejectValue("correo", "duplicado",
-                    messageSource.getMessage("registro.error.correoDuplicado", null, LocaleContextHolder.getLocale()));
+                    messageSource.getMessage("registro.error.correoDuplicado", null, Locale.getDefault()));
         }
         if (result.hasErrors()) {
             return "acceso";
         }
         usuarioService.registrar(usuario);
         redirectAttributes.addFlashAttribute("todoOk",
-                messageSource.getMessage("registro.exito", null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage("registro.exito", null, Locale.getDefault()));
         return "redirect:/login";
     }
 }
