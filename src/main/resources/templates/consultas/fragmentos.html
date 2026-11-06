@@ -57,12 +57,12 @@
             <div class="col-6">
                 <label for="precioInf" class="form-label small">[[#{filtro.minimo}]]</label>
                 <input type="number" id="precioInf" name="precioInf" th:value="${precioInf}"
-                       min="0" class="form-control" placeholder="0"/>
+                       min="0" class="form-control" placeholder="0,0"/>
             </div>
             <div class="col-6">
                 <label for="precioSup" class="form-label small">[[#{filtro.maximo}]]</label>
                 <input type="number" id="precioSup" name="precioSup" th:value="${precioSup}"
-                       min="0" class="form-control" placeholder="20000"/>
+                       min="0" class="form-control" placeholder="50000,0"/>
             </div>
         </div>
 
@@ -71,7 +71,7 @@
     </form>
 </section>
 
-<!-- Fragmento #2 para mostrar los productos en tarjetas (limite 0 = todos) -->
+<!-- Fragmento #2 para mostrar los productos en tarjetas -->
 <section th:fragment="tarjetas(limite)">
     <div th:if="${errorConsulta != null}" class="alert alert-warning">[[${errorConsulta}]]</div>
     <div th:if="${errorConsulta == null and (productos == null or productos.empty)}" class="text-center text-muted py-4">

@@ -1,0 +1,59 @@
+<!-- Fragmento 1: listado de categorías -->
+<section th:fragment="listado">
+    <div class="tabla-wrap">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>[[#{categoria.nombre}]]</th>
+                    <th>[[#{categoria.descripcion}]]</th>
+                    <th style="text-align:center;">[[#{categoria.productos}]]</th>
+                    <th>[[#{categoria.estado}]]</th>
+                    <th>[[#{categoria.acciones}]]</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="c : ${categorias}">
+                    <td class="producto">[[${c.nombre}]]</td>
+                    <td class="text-muted">[[${c.descripcion}]]</td>
+                    <td style="text-align:center;">[[${#lists.size(c.productos)}]]</td>
+                    <td th:text="${c.activo} ? #{categoria.estado.activa} : #{categoria.estado.inactiva}"></td>
+                    <td class="text-nowrap">
+                        <button type="button" class="link-accion btn-editar"
+                                th:data-id="${c.idCategoria}"
+                                th:data-nombre="${c.nombre}"
+                                th:data-descripcion="${c.descripcion}">[[#{categoria.editarLink}]]</button>
+                        <form th:action="@{/admin/categorias/estado}" method="post" class="d-inline ms-2">
+                            <input type="hidden" name="idCategoria" th:value="${c.idCategoria}"/>
+                            <button type="submit" th:if="${c.activo}" class="link-accion link-peligro">[[#{categoria.desactivar}]]</button>
+                            <button type="submit" th:unless="${c.activo}" class="link-accion link-ok">[[#{categoria.activar}]]</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(categorias)}">
+                    <td colspan="5" style="text-align:center;">[[#{lista.vacia}]]</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Fragmento 2: formulario para crear o editar una categoría -->
+<section th:fragment="formulario">
+    <div class="cosmi-card">
+        <h5 id="categoriaFormTitulo" class="fw-semibold mb-3"
+            th:data-nueva="#{categoria.nueva}" th:data-editar="#{categoria.editar}">[[#{categoria.nueva}]]</h5>
+        <form id="categoriaForm" th:action="@{/admin/categorias/guardar}" method="post">
+            <input type="hidden" id="categoriaId" name="idCategoria"/>
+            <div class="mb-3">
+                <label for="categoriaNombre" class="form-label">[[#{categoria.nombre}]] *</label>
+                <input type="text" id="categoriaNombre" name="nombre" class="form-control" maxlength="50" required/>
+            </div>
+            <div class="mb-3">
+                <label for="categoriaDescripcion" class="form-label">[[#{categoria.descripcion}]]</label>
+                <textarea id="categoriaDescripcion" name="descripcion" class="form-control" rows="3" maxlength="255"></textarea>
+            </div>
+            <button type="submit" class="btn-cosmi w-100">[[#{categoria.guardar}]]</button>
+            <button type="button" id="categoriaCancelar" class="btn-cosmi-outline w-100 mt-2 d-none">[[#{categoria.cancelar}]]</button>
+        </form>
+    </div>
+</section>

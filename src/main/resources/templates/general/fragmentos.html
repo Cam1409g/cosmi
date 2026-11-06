@@ -31,13 +31,6 @@
             <a th:if="${session.nombreUsuario == null}" th:href="@{/login}"
                th:classappend="${seccion == 'acceso'} ? 'activo'"
                th:text="#{plantilla.iniciarSesion}">Iniciar sesión</a>
-
-            <span class="saludo">
-                <a th:href="@{(lang='es')}">ES</a> ·
-                <a th:href="@{(lang='en')}">EN</a> ·
-                <a th:href="@{(lang='fr')}">FR</a> ·
-                <a th:href="@{(lang='pt')}">PT</a>
-            </span>
         </nav>
     </div>
 </header>

@@ -50,6 +50,9 @@ public class ProductoController {
         if (bindingResult.hasErrors()) {
             titulo = "error";
             mensaje = "producto.error04";
+        } else if (imagenFile != null && !imagenFile.isEmpty() && !imagenValida(imagenFile)) {
+            titulo = "error";
+            mensaje = "producto.error06";
         } else {
             try {
                 productoService.save(producto, imagenFile);
@@ -103,5 +106,13 @@ public class ProductoController {
                 messageSource.getMessage(mensaje, null, Locale.getDefault()));
 
         return "redirect:/admin/productos";
+    }
+    //HU15: la imagen solo puede ser JPG o PNG y pesar 2 MB o menos
+    private boolean imagenValida(MultipartFile imagenFile) {
+        if (imagenFile.getSize() > 2 * 1024 * 1024) {
+            return false;
+        }
+        String tipo = imagenFile.getContentType();
+        return "image/jpeg".equals(tipo) || "image/png".equals(tipo);
     }
 }
